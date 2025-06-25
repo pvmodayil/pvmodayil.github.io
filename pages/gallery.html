@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery | Philip Modayil</title>
+    <link rel="stylesheet" href="styles.css"/>
+    <style>
+        .gallery-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2rem 1rem 3rem 1rem;
+        }
+        .gallery-title {
+            text-align: center;
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #2b6cb0;
+        }
+        .gallery-desc {
+            text-align: center;
+            color: #444;
+            margin-bottom: 2.5rem;
+            font-size: 1.1rem;
+        }
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+        }
+        .gallery-item {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 2px 16px rgba(43,108,176,0.07);
+            overflow: hidden;
+            transition: transform 0.18s, box-shadow 0.18s;
+            display: flex;
+            flex-direction: column;
+        }
+        .gallery-item:hover {
+            transform: translateY(-6px) scale(1.025);
+            box-shadow: 0 8px 32px rgba(43,108,176,0.13);
+        }
+        .gallery-img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            background: #f3f6fa;
+        }
+        .gallery-caption {
+            padding: 1rem 1.2rem 0.7rem 1.2rem;
+            font-size: 1rem;
+            color: #333;
+            flex: 1;
+        }
+        @media (max-width: 600px) {
+            .gallery-img { height: 140px; }
+        }
+        .home-link {
+            color: #2b6cb0;
+            background: #f3f6fa;
+            font-weight: 500;
+            font-size: 0.97rem;
+            border: none;
+            padding: 0.28rem 0.95rem;
+            border-radius: 18px;
+            transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+            text-decoration: none;
+            box-shadow: 0 1px 4px rgba(43,108,176,0.06);
+            margin: 0;
+            display: inline-block;
+            line-height: 1.2;
+        }
+        .home-link:hover,
+        .home-link:focus {
+            background: #e6eef8;
+            color: #205080;
+            text-decoration: none;
+            box-shadow: 0 2px 8px rgba(43,108,176,0.10);
+        }
+    </style>
+</head>
+<body>
+    <header style="background: none; box-shadow: none; padding-top: 1.2rem;">
+        <div style="max-width:1100px; margin:0 auto; padding:0 1rem;">
+            <a href="../index.html" class="home-link" style="margin-left:0;">← Home</a>
+        </div>
+    </header>
+    <main>
+        <div class="gallery-container">
+            <div class="gallery-title">Gallery</div>
+            <div class="gallery-desc">A glimpse into my journey, work, and moments that inspire me.</div>
+            <div class="gallery-grid">
+                <!-- Example images, replace src with your own images in the Public/ directory -->
+                <div class="gallery-item">
+                    <img src="../Public/KH2024_presentation.jpg" alt="Kleinheubacher Conference" class="gallery-img" onclick="openModal(this)"/>
+                    <div class="gallery-caption">Speaking at Kleinheubacher Tagung 2024</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="../Public/Dingolfing2024.jpg" alt="Hackathon" class="gallery-img" onclick="openModal(this)"/>
+                    <div class="gallery-caption">BMW Inno Challenge 2024</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="../Public/APEMC2025_presentation.jpg" alt="APEMC Conference" class="gallery-img" onclick="openModal(this)"/>
+                    <div class="gallery-caption">Speaking at APEMC 2025, Taipei</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="../Public/HattaHike.jpg" alt="Nature" class="gallery-img" onclick="openModal(this)"/>
+                    <div class="gallery-caption">Hiking at Hatta, UAE</div>
+                </div>
+                <!-- Add more images as needed -->
+            </div>
+        </div>
+        <!-- Modal for image pop-up -->
+        <div id="imgModal" style="display:none; position:fixed; z-index:9999; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.85); align-items:center; justify-content:center; flex-direction:column;">
+            <span id="closeModal" style="position:absolute;top:30px;right:50px;font-size:2.5rem;color:#fff;cursor:pointer;font-weight:bold;z-index:10001;">&times;</span>
+            <div style="display:flex; flex-direction:column; align-items:center; justify-content:center;">
+                <img id="modalImg" src="" alt="" style="max-width:90vw;max-height:80vh;box-shadow:0 8px 32px rgba(43,108,176,0.25);border-radius:16px;display:block;margin:auto;">
+                <div id="modalCaption" style="color:#fff;text-align:left;margin-top:1.2rem;font-size:1.2rem;max-width:90vw;"></div>
+            </div>
+        </div>
+        <script>
+            function openModal(img) {
+                document.getElementById('imgModal').style.display = 'flex';
+                document.getElementById('modalImg').src = img.src;
+                document.getElementById('modalImg').alt = img.alt;
+                // Get caption from sibling .gallery-caption
+                var caption = img.parentElement.querySelector('.gallery-caption');
+                document.getElementById('modalCaption').textContent = caption ? caption.textContent : '';
+            }
+            document.getElementById('closeModal').onclick = function() {
+                document.getElementById('imgModal').style.display = 'none';
+            };
+            // Close modal on background click
+            document.getElementById('imgModal').onclick = function(e) {
+                if (e.target === this) this.style.display = 'none';
+            };
+            // Optional: close modal on ESC key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') document.getElementById('imgModal').style.display = 'none';
+            });
+        </script>
+    </main>
+</body>
+</html>

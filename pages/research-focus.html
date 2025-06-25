@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research Projects - Philip Modayil</title>
+    <link rel="stylesheet" href="styles.css"/>
+    <style>
+        body {
+            background: #f8fafc;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            color: #1a202c;
+        }
+        .page-header {
+            background: linear-gradient(90deg, #2b5876 0%, #4e4376 100%);
+            color: #fff;
+            padding: 2.5rem 0 1.5rem 0;
+            text-align: center;
+        }
+        .page-header h1 {
+            margin: 0 0 0.5rem 0;
+            font-size: 2.5rem;
+            letter-spacing: 1px;
+        }
+        .page-header p {
+            margin: 0;
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 2rem 0 0 0;
+        }
+        .nav-btn {
+            background: #fff;
+            color: #4e4376 !important;
+            border: 2px solid #4e4376;
+            border-radius: 2rem;
+            padding: 0.6rem 2rem;
+            font-size: 1.08rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.18s, color 0.18s, border-color 0.18s;
+            box-shadow: 0 1px 4px 0 rgba(44,62,80,0.07);
+        }
+        .nav-btn:visited {
+            color: #4e4376 !important;
+        }
+        .nav-btn:focus {
+            outline: 2px solid #4e4376;
+            outline-offset: 2px;
+        }
+        .nav-btn:hover {
+            background: #4e4376;
+            color: #fff !important;
+            border-color: #2b5876;
+        }
+        .projects-list {
+            max-width: 900px;
+            margin: 2.5rem auto 2rem auto;
+            padding: 0 1rem;
+        }
+        .project-detail {
+            background: #fff;
+            border-radius: 1.2rem;
+            box-shadow: 0 2px 16px 0 rgba(44,62,80,0.07);
+            margin-bottom: 2.5rem;
+            padding: 2rem 2rem 1.5rem 2rem;
+            border-left: 8px solid #4e4376;
+            transition: box-shadow 0.2s;
+        }
+        .project-detail:hover {
+            box-shadow: 0 4px 32px 0 rgba(44,62,80,0.13);
+        }
+        .project-title {
+            font-size: 1.5rem;
+            margin: 0 0 0.3rem 0;
+            color: #4e4376;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .project-meta {
+            font-size: 1rem;
+            color: #6c757d;
+            margin-bottom: 1rem;
+        }
+        .project-description {
+            font-size: 1.08rem;
+            margin-bottom: 1.2rem;
+        }
+        .project-highlights {
+            margin-bottom: 1.2rem;
+        }
+        .project-highlights ul {
+            margin: 0 0 0 1.2rem;
+            padding: 0;
+            font-size: 1rem;
+        }
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .tag {
+            background: #e0e7ff;
+            color: #3730a3;
+            border-radius: 0.7rem;
+            padding: 0.25rem 0.9rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+        @media (max-width: 600px) {
+            .project-detail { padding: 1.2rem 0.7rem; }
+            .projects-list { padding: 0 0.2rem; }
+            .nav-buttons { flex-direction: column; gap: 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-header">
+        <h1>Research Projects</h1>
+        <p>Exploring innovation at the intersection of AI and Engineering</p>
+        <div class="nav-buttons">
+            <a class="nav-btn" href="../index.html">← Home</a>
+            <a class="nav-btn" href="./gallery.html">Gallery</a>
+        </div>
+    </div>
+    <main>
+        <div class="projects-list">
+            <section class="project-detail">
+                <div class="project-title">🔬 Hybrid AI for PCB Design Optimization</div>
+                <div class="project-meta">TU Dortmund &mdash; Deep RL &amp; Genetic Algorithms</div>
+                <div class="project-description">
+                    Developed a hybrid approach combining Deep Reinforcement Learning and Genetic Algorithms to optimize PCB transmission line layouts for high-speed circuits.
+                </div>
+                <div class="project-highlights">
+                    <ul>
+                        <li>Achieved significant improvements in design efficiency and signal integrity.</li>
+                        <li>Implemented a pure C++ optimization engine for rapid design iteration.</li>
+                        <li>Published results at leading EDA and AI conferences.</li>
+                    </ul>
+                    <div style="background:#f3f6fa; border-left:4px ; border-radius:0.6rem; padding:1rem 1.2rem; margin:1rem 0 0.5rem 0; display:flex; align-items:center; gap:0.8rem;">
+                        <span style="font-size:1.5rem; color:#4e4376;">📄</span>
+                        <div>
+                            <div style="font-weight:600; color:#3730a3; font-size:1.08rem;">Publication</div>
+                            <div style="color:#222; font-size:1rem; margin-top:0.2rem;">
+                                AI-based Hybrid Approach (RL/GA) for Calculating the Characteristic Parameters of a Single Surface Microstrip Transmission Line
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-tags">
+                    <span class="tag">Deep RL</span>
+                    <span class="tag">Genetic Algorithms</span>
+                    <span class="tag">C++</span>
+                    <span class="tag">EDA</span>
+                </div>
+            </section>
+            <section class="project-detail">
+                <div class="project-title">🤖 Multimodal Agentic Chatbot for PCB Engineers</div>
+                <div class="project-meta">DT/IPL, TU Dortmund &mdash; LLM, RAG, Simulation Tools</div>
+                <div class="project-description">
+                    Designed a multimodal chatbot assistant for PCB designers, integrating language models, document retrieval, and simulation tool automation.
+                </div>
+                <div class="project-highlights">
+                    <ul>
+                        <li>Fine-tuned LLMs for technical document Q&amp;A and design support.</li>
+                        <li>Contextualized RAG pipeline for accurate, up-to-date information retrieval.</li>
+                        <li>Agentic workflow: autonomously invokes simulation tools based on user queries.</li>
+                    </ul>
+                </div>
+                <div class="project-tags">
+                    <span class="tag">LLM</span>
+                    <span class="tag">RAG</span>
+                    <span class="tag">Agent Systems</span>
+                    <span class="tag">Simulation</span>
+                </div>
+            </section>
+            <section class="project-detail">
+                <div class="project-title">🚁 Vision Language Model for Drone Image Analysis</div>
+                <div class="project-meta">BMW Innovation Challenge &mdash; Computer Vision, Streamlit</div>
+                <div class="project-description">
+                    Built a Vision Language Model (VLM) system for automated drone image analysis, enabling efficient inspection of industrial sites.
+                </div>
+                <div class="project-highlights">
+                    <ul>
+                        <li>Automated detection of anomalies and quality issues in drone imagery.</li>
+                        <li>Streamlit-based dashboard for interactive analysis and reporting.</li>
+                        <li>Integrated computer vision and NLP for actionable insights.</li>
+                    </ul>
+                </div>
+                <div class="project-tags">
+                    <span class="tag">VLM</span>
+                    <span class="tag">Computer Vision</span>
+                    <span class="tag">Streamlit</span>
+                    <span class="tag">Industrial AI</span>
+                </div>
+            </section>
+            <section class="project-detail">
+                <div class="project-title">⚡ Predictive Maintenance with Smart Sensors</div>
+                <div class="project-meta">Wilo SE &mdash; IoT, ML, Real-time Analytics</div>
+                <div class="project-description">
+                    Engineered a smart sensor system for real-time pump monitoring and predictive maintenance in industrial environments.
+                </div>
+                <div class="project-highlights">
+                    <ul>
+                        <li>Developed feature extraction algorithms for sensor data streams.</li>
+                        <li>Built predictive models (LOESS) to forecast failures and reduce downtime.</li>
+                        <li>Deployed analytics dashboard for live monitoring and alerts.</li>
+                    </ul>
+                </div>
+                <div class="project-tags">
+                    <span class="tag">IoT</span>
+                    <span class="tag">Predictive Analytics</span>
+                    <span class="tag">ML</span>
+                    <span class="tag">Sensor Systems</span>
+                </div>
+            </section>
+        </div>
+    </main>
+    <footer>
+        <div class="container" style="text-align:center; margin:2rem auto 1rem auto; color:#6c757d;">
+            &copy; 2025 Philip Modayil. Innovating at the intersection of AI and Engineering.
+        </div>
+    </footer>
+</body>
+</html>
