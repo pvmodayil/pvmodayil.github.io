@@ -370,20 +370,24 @@ a:hover {
 }
 
 .cv-btn {
-    display: inline-block;
-    margin-top: 1.2rem;
-    padding: 0.7rem 1.5rem;
-    background: #2b6cb0;
-    color: #fff;
-    border-radius: 30px;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 1rem;
-    transition: background 0.2s;
-    box-shadow: 0 2px 8px rgba(43,108,176,0.08);
+  display: inline-flex;
+  align-items: center;
+  padding: 12px 24px;
+  font-weight: 500;
+  background: #2563eb;
+  color: white;
+  border: 2px solid #2563eb;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  font-size: 16px;
 }
+
 .cv-btn:hover {
-    background: #205080;
+  background: #0a013f;
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
 }
 
 .research-link-btn {
