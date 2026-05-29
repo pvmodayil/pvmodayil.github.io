@@ -4,158 +4,272 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gallery | Philip Modayil</title>
-    <link rel="stylesheet" href="styles.css"/>
+    <link rel="stylesheet" href="../styles.css"/>
     <style>
-        .gallery-container {
-            max-width: 1100px;
+        .page-container {
+            max-width: var(--max-w);
             margin: 0 auto;
-            padding: 2rem 1rem 3rem 1rem;
+            padding: 8rem 2rem 6rem;
         }
-        .gallery-title {
-            text-align: center;
-            font-size: 2.2rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            color: #2b6cb0;
+
+        .page-back {
+            font-family: var(--mono);
+            font-size: 0.75rem;
+            font-weight: 300;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--muted);
+            text-decoration: none;
+            transition: color 0.3s;
+            display: inline-block;
+            margin-bottom: 3rem;
         }
-        .gallery-desc {
-            text-align: center;
-            color: #444;
-            margin-bottom: 2.5rem;
-            font-size: 1.1rem;
+
+        .page-back:hover {
+            color: var(--accent);
         }
+
         .gallery-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            grid-template-columns: repeat(3, 1fr);
             gap: 1.5rem;
+            margin-top: 3rem;
         }
+
         .gallery-item {
-            background: #fff;
-            border-radius: 16px;
-            box-shadow: 0 2px 16px rgba(43,108,176,0.07);
+            position: relative;
             overflow: hidden;
-            transition: transform 0.18s, box-shadow 0.18s;
-            display: flex;
+            cursor: pointer;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.04);
+        }
+
+        .gallery-caption {
+            padding: 1rem 0;
+        }
+
+        .gallery-caption strong {
+            font-family: var(--serif);
+            font-size: 1.15rem;
+            font-weight: 400;
+            color: var(--ink);
+            display: block;
+            margin-bottom: 0.2rem;
+        }
+
+        .gallery-caption span {
+            font-size: 0.85rem;
+            color: var(--muted);
+        }
+
+        #imgModal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(28, 25, 23, 0.95);
+            align-items: center;
+            justify-content: center;
             flex-direction: column;
         }
-        .gallery-item:hover {
-            transform: translateY(-6px) scale(1.025);
-            box-shadow: 0 8px 32px rgba(43,108,176,0.13);
-        }
-        img {
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-            -webkit-user-drag: none;
-            -khtml-user-drag: none;
-            -moz-user-drag: none;
-            -o-user-drag: none;
-            user-drag: none;
-        }
-        .gallery-img {
-            width: 100%;
-            height: 220px;
-            object-fit: cover;
-            background: #f3f6fa;
-        }
-        .gallery-caption {
-            padding: 1rem 1.2rem 0.7rem 1.2rem;
-            font-size: 1rem;
-            color: #333;
-            flex: 1;
-        }
-        @media (max-width: 600px) {
-            .gallery-img { height: 140px; }
-        }
-        .home-link {
-            color: #2b6cb0;
-            background: #f3f6fa;
-            font-weight: 500;
-            font-size: 0.97rem;
+
+        #closeModal {
+            position: absolute;
+            top: 2rem;
+            right: 2.5rem;
+            font-size: 2rem;
+            color: rgba(245, 241, 235, 0.6);
+            cursor: pointer;
+            font-weight: 300;
+            z-index: 10001;
+            transition: color 0.3s;
+            background: none;
             border: none;
-            padding: 0.28rem 0.95rem;
-            border-radius: 18px;
-            transition: background 0.18s, color 0.18s, box-shadow 0.18s;
-            text-decoration: none;
-            box-shadow: 0 1px 4px rgba(43,108,176,0.06);
-            margin: 0;
-            display: inline-block;
-            line-height: 1.2;
+            font-family: var(--sans);
         }
-        .home-link:hover,
-        .home-link:focus {
-            background: #e6eef8;
-            color: #205080;
-            text-decoration: none;
-            box-shadow: 0 2px 8px rgba(43,108,176,0.10);
+
+        #closeModal:hover {
+            color: var(--cream);
+        }
+
+        #prevBtn, #nextBtn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.8rem;
+            background: none;
+            border: none;
+            color: rgba(245, 241, 235, 0.5);
+            cursor: pointer;
+            z-index: 10001;
+            transition: color 0.3s;
+            font-family: var(--sans);
+            padding: 1rem;
+        }
+
+        #prevBtn { left: 1.5rem; }
+        #nextBtn { right: 1.5rem; }
+
+        #prevBtn:hover, #nextBtn:hover {
+            color: var(--cream);
+        }
+
+        #modalImg {
+            max-width: 85vw;
+            max-height: 75vh;
+            display: block;
+            margin: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        #modalCaption {
+            color: rgba(245, 241, 235, 0.7);
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.95rem;
+            font-weight: 300;
+            letter-spacing: 0.02em;
+            max-width: 85vw;
+        }
+
+        @media (max-width: 900px) {
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .gallery-item img {
+                height: 240px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+            .gallery-item img {
+                height: 260px;
+            }
+            .page-container {
+                padding: 6rem 1.5rem 4rem;
+            }
         }
     </style>
 </head>
 <body>
-    <header style="background: none; box-shadow: none; padding-top: 1.2rem;">
-        <div style="max-width:1100px; margin:0 auto; padding:0 1rem;">
-            <a href="../index.html" class="home-link" style="margin-left:0;">← Home</a>
+    <nav class="site-nav scrolled">
+        <div class="nav-inner">
+            <a href="../index.html" class="nav-name">Philip Modayil</a>
+            <ul class="nav-links">
+                <li><a href="../index.html#about">About</a></li>
+                <li><a href="../index.html#experience">Experience</a></li>
+                <li><a href="../index.html#projects">Work</a></li>
+                <li><a href="../index.html#research">Research</a></li>
+                <li><a href="../index.html#expertise">Expertise</a></li>
+                <li><a href="../index.html#education">Education</a></li>
+                <li><a href="./gallery.html">Gallery</a></li>
+            </ul>
         </div>
-    </header>
-    <main>
-        <div class="gallery-container">
-            <div class="gallery-title">Gallery</div>
-            <div class="gallery-desc">A glimpse into my journey, work, and moments that inspire me.</div>
-            <div class="gallery-grid">
-                <!-- Example images, replace src with your own images in the Public/ directory -->
-                 <div class="gallery-item">
-                    <img src="../Public/KH2025_presentation.jpeg" alt="Kleinheubacher Conference 2025" class="gallery-img" onclick="openModal(this)"/>
-                    <div class="gallery-caption">Speaking at Kleinheubacher Tagung 2025</div>
-                </div>
-                <div class="gallery-item">
-                    <img src="../Public/APEMC2025_presentation.jpg" alt="APEMC Conference 2025" class="gallery-img" onclick="openModal(this)"/>
-                    <div class="gallery-caption">Speaking at APEMC 2025, Taipei</div>
-                </div>
-                <div class="gallery-item">
-                    <img src="../Public/APEMC2025_WelcomeDinner.jpg" alt="APEMC Conference 2025" class="gallery-img" onclick="openModal(this)"/>
-                    <div class="gallery-caption">Attending the welcome dinner at APEMC 2025</div>
-                </div>
-                <div class="gallery-item">
-                    <img src="../Public/KH2024_presentation.jpg" alt="Kleinheubacher Conference 2024" class="gallery-img" onclick="openModal(this)"/>
-                    <div class="gallery-caption">Speaking at Kleinheubacher Tagung 2024</div>
-                </div>
-                <div class="gallery-item">
-                    <img src="../Public/Dingolfing2024.jpg" alt="Hackathon" class="gallery-img" onclick="openModal(this)"/>
-                    <div class="gallery-caption">Presenting at BMW Inno Challenge 2024</div>
-                </div>
-                <div class="gallery-item">
-                    <img src="../Public/WorkingDingolfing2024.jpg" alt="Hackathon" class="gallery-img" onclick="openModal(this)"/>
-                    <div class="gallery-caption">Working with the team at BMW Inno Challenge 2024</div>
-                </div>
-                <div class="gallery-item">
-                    <img src="../Public/HattaHike.jpg" alt="Nature" class="gallery-img" onclick="openModal(this)"/>
-                    <div class="gallery-caption">Hiking at Hatta, UAE</div>
-                </div>
-                <div class="gallery-item">
-                    <img src="../Public/MadeiraHike.jpg" alt="Nature" class="gallery-img" onclick="openModal(this)"/>
-                    <div class="gallery-caption">Hiking at Madeira, Portugal</div>
-                </div>
-                <!-- Add more images as needed -->
-            </div>
-        </div>
-        <!-- Modal for image pop-up -->
-        <div id="imgModal" style="display:none; position:fixed; z-index:9999; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.85); align-items:center; justify-content:center; flex-direction:column;">
-            <span id="closeModal" style="position:absolute;top:30px;right:50px;font-size:2.5rem;color:#fff;cursor:pointer;font-weight:bold;z-index:10001;">&times;</span>
-            <button id="prevBtn" style="position:absolute;left:30px;top:50%;transform:translateY(-50%);font-size:2.2rem;background:none;border:none;color:#fff;cursor:pointer;z-index:10001;">&#8592;</button>
-            <button id="nextBtn" style="position:absolute;right:30px;top:50%;transform:translateY(-50%);font-size:2.2rem;background:none;border:none;color:#fff;cursor:pointer;z-index:10001;">&#8594;</button>
-            <div style="display:flex; flex-direction:column; align-items:center; justify-content:center;">
-                <img id="modalImg" src="" alt="" style="max-width:90vw;max-height:80vh;box-shadow:0 8px 32px rgba(43,108,176,0.25);border-radius:16px;display:block;margin:auto;">
-                <div id="modalCaption" style="color:#fff;text-align:left;margin-top:1.2rem;font-size:1.2rem;max-width:90vw;"></div>
-            </div>
-        </div>
-        <script>
-            // Collect all gallery images and captions
-            const galleryItems = Array.from(document.querySelectorAll('.gallery-item'));
-            const images = galleryItems.map(item => item.querySelector('.gallery-img'));
-            const captions = galleryItems.map(item => item.querySelector('.gallery-caption').textContent);
+    </nav>
 
-            let currentIndex = 0;
+    <div class="page-container">
+        <a href="../index.html" class="page-back">&larr; Back</a>
+        <p class="section-label">Gallery</p>
+        <h1 class="section-title">Moments &amp; Milestones</h1>
+        <p style="font-size: 1.05rem; color: var(--muted); max-width: 500px;">A glimpse into the journey — conferences, collaborations, and places that inspire.</p>
+
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src="../Public/KH2025_presentation.jpeg" alt="Kleinheubacher Conference 2025"/>
+                <div class="gallery-caption">
+                    <strong>Kleinheubacher Tagung 2025</strong>
+                    <span>Speaking engagement</span>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="../Public/APEMC2025_presentation.jpg" alt="APEMC Conference 2025"/>
+                <div class="gallery-caption">
+                    <strong>APEMC 2025, Taipei</strong>
+                    <span>Speaking engagement</span>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="../Public/APEMC2025_WelcomeDinner.jpg" alt="APEMC Conference 2025"/>
+                <div class="gallery-caption">
+                    <strong>APEMC 2025</strong>
+                    <span>Welcome dinner</span>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="../Public/KH2024_presentation.jpg" alt="Kleinheubacher Conference 2024"/>
+                <div class="gallery-caption">
+                    <strong>Kleinheubacher Tagung 2024</strong>
+                    <span>Speaking engagement</span>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="../Public/Dingolfing2024.jpg" alt="Hackathon"/>
+                <div class="gallery-caption">
+                    <strong>BMW Inno Challenge 2024</strong>
+                    <span>Presenting to the jury</span>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="../Public/WorkingDingolfing2024.jpg" alt="Hackathon"/>
+                <div class="gallery-caption">
+                    <strong>BMW Inno Challenge 2024</strong>
+                    <span>Working with the team</span>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="../Public/HattaHike.jpg" alt="Nature"/>
+                <div class="gallery-caption">
+                    <strong>Hatta, UAE</strong>
+                    <span>Hiking</span>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="../Public/MadeiraHike.jpg" alt="Nature"/>
+                <div class="gallery-caption">
+                    <strong>Madeira, Portugal</strong>
+                    <span>Hiking</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <p>&copy; 2025&ndash;2026 Philip Modayil</p>
+    </footer>
+
+    <div id="imgModal">
+        <button id="closeModal">&times;</button>
+        <button id="prevBtn">&#8592;</button>
+        <button id="nextBtn">&#8594;</button>
+        <div style="display:flex; flex-direction:column; align-items:center; justify-content:center;">
+            <img id="modalImg" src="" alt="">
+            <div id="modalCaption"></div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            var images = Array.from(document.querySelectorAll('.gallery-item img'));
+            var captions = Array.from(document.querySelectorAll('.gallery-caption')).map(function(el) {
+                return el.textContent.trim().replace(/\s+/g, ' ');
+            });
+            var currentIndex = 0;
 
             function showModalAtIndex(idx) {
                 currentIndex = idx;
@@ -165,17 +279,36 @@
                 document.getElementById('modalCaption').textContent = captions[idx];
             }
 
-            // Attach openModal to each image
-            images.forEach((img, idx) => {
-                img.onclick = function() { showModalAtIndex(idx); };
+            images.forEach(function(img, idx) {
+                img.addEventListener('click', function() { showModalAtIndex(idx); });
             });
 
-            document.getElementById('closeModal').onclick = function() {
+            document.getElementById('closeModal').addEventListener('click', function() {
                 document.getElementById('imgModal').style.display = 'none';
-            };
-            document.getElementById('imgModal').onclick = function(e) {
+            });
+
+            document.getElementById('imgModal').addEventListener('click', function(e) {
                 if (e.target === this) this.style.display = 'none';
-            };
+            });
+
+            function nextImage() {
+                showModalAtIndex((currentIndex + 1) % images.length);
+            }
+
+            function prevImage() {
+                showModalAtIndex((currentIndex - 1 + images.length) % images.length);
+            }
+
+            document.getElementById('nextBtn').addEventListener('click', function(e) {
+                e.stopPropagation();
+                nextImage();
+            });
+
+            document.getElementById('prevBtn').addEventListener('click', function(e) {
+                e.stopPropagation();
+                prevImage();
+            });
+
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') document.getElementById('imgModal').style.display = 'none';
                 if (document.getElementById('imgModal').style.display === 'flex') {
@@ -183,22 +316,6 @@
                     if (e.key === 'ArrowLeft') prevImage();
                 }
             });
-
-            function nextImage() {
-                showModalAtIndex((currentIndex + 1) % images.length);
-            }
-            function prevImage() {
-                showModalAtIndex((currentIndex - 1 + images.length) % images.length);
-            }
-
-            document.getElementById('nextBtn').onclick = function(e) {
-                e.stopPropagation();
-                nextImage();
-            };
-            document.getElementById('prevBtn').onclick = function(e) {
-                e.stopPropagation();
-                prevImage();
-            };
 
             document.addEventListener('contextmenu', function(e) {
                 if (e.target.tagName === 'IMG') {
@@ -255,7 +372,7 @@
                     img.style.filter = '';
                 });
             });
-        </script>
-    </main>
+        })();
+    </script>
 </body>
 </html>
