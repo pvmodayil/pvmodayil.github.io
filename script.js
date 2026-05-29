@@ -102,3 +102,94 @@ document.head.appendChild(style);
 
 // Create particles periodically
 setInterval(createParticle, 300);
+
+function addWatermark(img) {
+    if (img.dataset.watermarked) return;
+    img.dataset.watermarked = 'true';
+    var canvas = document.createElement('canvas');
+    var ctx = canvas.getContext('2d');
+    canvas.width = img.naturalWidth;
+    canvas.height = img.naturalHeight;
+    ctx.drawImage(img, 0, 0);
+    ctx.save();
+    ctx.globalAlpha = 0.3;
+    ctx.fillStyle = '#ffffff';
+    ctx.font = Math.max(Math.floor(canvas.width / 12), 16) + 'px Arial';
+    ctx.rotate(-Math.PI / 6);
+    var text = '\u00A9 Philip Modayil';
+    var textWidth = ctx.measureText(text).width;
+    var stepX = textWidth + 80;
+    var stepY = Math.max(Math.floor(canvas.height / 5), 60);
+    var diag = Math.sqrt(canvas.width * canvas.width + canvas.height * canvas.height);
+    for (var y = -diag; y < diag; y += stepY) {
+        for (var x = -diag; x < diag; x += stepX) {
+            ctx.fillText(text, x, y);
+        }
+    }
+    ctx.restore();
+    img.src = canvas.toDataURL('image/jpeg', 0.92);
+}
+
+document.querySelectorAll('img').forEach(function(img) {
+    if (img.complete && img.naturalWidth > 0) {
+        addWatermark(img);
+    } else {
+        img.addEventListener('load', function() { addWatermark(img); });
+    }
+});
+
+document.addEventListener('contextmenu', function(e) {
+    if (e.target.tagName === 'IMG') {
+        e.preventDefault();
+    }
+});
+
+document.addEventListener('dragstart', function(e) {
+    if (e.target.tagName === 'IMG') {
+        e.preventDefault();
+    }
+});
+
+document.addEventListener('keydown', function(e) {
+    if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'S')) {
+        e.preventDefault();
+    }
+    if (e.key === 'PrintScreen') {
+        e.preventDefault();
+        navigator.clipboard.writeText('');
+    }
+    if (e.metaKey || e.key === 'Meta' || e.key === 'OS') {
+        document.querySelectorAll('img').forEach(function(img) {
+            img.style.filter = 'blur(20px)';
+        });
+    }
+});
+
+document.addEventListener('keyup', function(e) {
+    if (e.key === 'Meta' || e.key === 'OS') {
+        document.querySelectorAll('img').forEach(function(img) {
+            img.style.filter = '';
+        });
+    }
+    if (e.key === 'PrintScreen') {
+        navigator.clipboard.writeText('');
+    }
+});
+
+document.addEventListener('visibilitychange', function() {
+    document.querySelectorAll('img').forEach(function(img) {
+        img.style.filter = document.hidden ? 'blur(20px)' : '';
+    });
+});
+
+window.addEventListener('blur', function() {
+    document.querySelectorAll('img').forEach(function(img) {
+        img.style.filter = 'blur(20px)';
+    });
+});
+
+window.addEventListener('focus', function() {
+    document.querySelectorAll('img').forEach(function(img) {
+        img.style.filter = '';
+    });
+});
