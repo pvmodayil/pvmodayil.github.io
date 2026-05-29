@@ -1,160 +1,90 @@
-// Navigation functionality
-const navLinks = document.querySelectorAll('.nav-link');
-const sections = document.querySelectorAll('.section');
-
-navLinks.forEach(link => {
-    link.addEventListener('click', (e) => {
-        // Only prevent default for hash links (internal sections)
-        if (link.getAttribute('href').startsWith('#')) {
-            e.preventDefault();
-            
-            // Remove active class from all nav links and sections
-            navLinks.forEach(nl => nl.classList.remove('active'));
-            sections.forEach(section => section.classList.remove('active'));
-            
-            // Add active class to clicked nav link
-            link.classList.add('active');
-            
-            // Show corresponding section
-            const targetId = link.getAttribute('href').substring(1);
-            const targetSection = document.getElementById(targetId);
-            if (targetSection) {
-                targetSection.classList.add('active');
-                
-                // Add animation to cards in the active section
-                const cards = targetSection.querySelectorAll('.card');
-                cards.forEach((card, index) => {
-                    card.style.animationDelay = `${index * 0.1}s`;
-                    card.classList.add('animate-fade-in');
-                });
+(function() {
+    var nav = document.querySelector('.site-nav');
+    if (nav) {
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 60) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
             }
-        }
-        // For other links (like gallery.html), let the browser handle navigation
-    });
-});
+        });
+    }
 
-// Smooth scrolling for better UX
-document.addEventListener('DOMContentLoaded', function() {
-    // Add some interactive hover effects
-    const cards = document.querySelectorAll('.card');
-    cards.forEach(card => {
-        card.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-8px) scale(1.02)';
+    var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
         });
-        
-        card.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0) scale(1)';
-        });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(function(el) {
+        observer.observe(el);
     });
 
-    // Add typing effect to hero title
-    const heroTitle = document.querySelector('.hero h1');
-    const originalText = heroTitle.textContent;
-    heroTitle.textContent = '';
-    
-    let i = 0;
-    const typeWriter = () => {
-        if (i < originalText.length) {
-            heroTitle.textContent += originalText.charAt(i);
-            i++;
-            setTimeout(typeWriter, 100);
+    document.querySelectorAll('.nav-links a[href^="#"]').forEach(function(link) {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            var target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    });
+
+    document.addEventListener('contextmenu', function(e) {
+        if (e.target.tagName === 'IMG') {
+            e.preventDefault();
         }
-    };
-    
-    setTimeout(typeWriter, 500);
-});
+    });
 
-// Add some particle animation to the header
-function createParticle() {
-    const particle = document.createElement('div');
-    particle.style.position = 'absolute';
-    particle.style.width = '4px';
-    particle.style.height = '4px';
-    particle.style.background = 'rgba(255, 255, 255, 0.6)';
-    particle.style.borderRadius = '50%';
-    particle.style.pointerEvents = 'none';
-    particle.style.left = Math.random() * 100 + '%';
-    particle.style.animationDuration = (Math.random() * 3 + 2) + 's';
-    particle.style.animationName = 'float';
-
-    document.querySelector('.hero').appendChild(particle);
-
-    setTimeout(() => {
-        particle.remove();
-    }, 5000);
-}
-
-// Add CSS for floating animation
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes float {
-        0% {
-            transform: translateY(100vh) rotate(0deg);
-            opacity: 1;
+    document.addEventListener('dragstart', function(e) {
+        if (e.target.tagName === 'IMG') {
+            e.preventDefault();
         }
-        100% {
-            transform: translateY(-100px) rotate(360deg);
-            opacity: 0;
+    });
+
+    document.addEventListener('keydown', function(e) {
+        if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'S')) {
+            e.preventDefault();
         }
-    }
-`;
-document.head.appendChild(style);
+        if (e.key === 'PrintScreen') {
+            e.preventDefault();
+            navigator.clipboard.writeText('');
+        }
+        if (e.metaKey || e.key === 'Meta' || e.key === 'OS') {
+            document.querySelectorAll('img').forEach(function(img) {
+                img.style.filter = 'blur(20px)';
+            });
+        }
+    });
 
-// Create particles periodically
-setInterval(createParticle, 300);
+    document.addEventListener('keyup', function(e) {
+        if (e.key === 'Meta' || e.key === 'OS') {
+            document.querySelectorAll('img').forEach(function(img) {
+                img.style.filter = '';
+            });
+        }
+        if (e.key === 'PrintScreen') {
+            navigator.clipboard.writeText('');
+        }
+    });
 
-document.addEventListener('contextmenu', function(e) {
-    if (e.target.tagName === 'IMG') {
-        e.preventDefault();
-    }
-});
+    document.addEventListener('visibilitychange', function() {
+        document.querySelectorAll('img').forEach(function(img) {
+            img.style.filter = document.hidden ? 'blur(20px)' : '';
+        });
+    });
 
-document.addEventListener('dragstart', function(e) {
-    if (e.target.tagName === 'IMG') {
-        e.preventDefault();
-    }
-});
-
-document.addEventListener('keydown', function(e) {
-    if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'S')) {
-        e.preventDefault();
-    }
-    if (e.key === 'PrintScreen') {
-        e.preventDefault();
-        navigator.clipboard.writeText('');
-    }
-    if (e.metaKey || e.key === 'Meta' || e.key === 'OS') {
+    window.addEventListener('blur', function() {
         document.querySelectorAll('img').forEach(function(img) {
             img.style.filter = 'blur(20px)';
         });
-    }
-});
+    });
 
-document.addEventListener('keyup', function(e) {
-    if (e.key === 'Meta' || e.key === 'OS') {
+    window.addEventListener('focus', function() {
         document.querySelectorAll('img').forEach(function(img) {
             img.style.filter = '';
         });
-    }
-    if (e.key === 'PrintScreen') {
-        navigator.clipboard.writeText('');
-    }
-});
-
-document.addEventListener('visibilitychange', function() {
-    document.querySelectorAll('img').forEach(function(img) {
-        img.style.filter = document.hidden ? 'blur(20px)' : '';
     });
-});
-
-window.addEventListener('blur', function() {
-    document.querySelectorAll('img').forEach(function(img) {
-        img.style.filter = 'blur(20px)';
-    });
-});
-
-window.addEventListener('focus', function() {
-    document.querySelectorAll('img').forEach(function(img) {
-        img.style.filter = '';
-    });
-});
+})();
