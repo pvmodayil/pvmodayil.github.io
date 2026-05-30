@@ -32,6 +32,13 @@
         });
     });
 
+    document.querySelectorAll('.timeline-toggle').forEach(function(toggle) {
+        toggle.addEventListener('click', function() {
+            var item = this.closest('.timeline-item');
+            item.classList.toggle('expanded');
+        });
+    });
+
     document.addEventListener('contextmenu', function(e) {
         if (e.target.tagName === 'IMG') {
             e.preventDefault();
