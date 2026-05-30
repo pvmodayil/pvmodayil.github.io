@@ -356,6 +356,10 @@ img {
     letter-spacing: 0.02em;
 }
 
+.timeline-header {
+    position: relative;
+}
+
 .timeline-role {
     font-family: var(--serif);
     font-size: 1.7rem;
@@ -369,6 +373,27 @@ img {
     color: var(--muted);
     margin-bottom: 1.5rem;
     letter-spacing: 0.02em;
+}
+
+.timeline-toggle {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 0.5rem;
+    background: none;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: transform 0.3s ease;
+}
+
+.timeline-toggle svg {
+    transition: transform 0.3s ease;
+}
+
+.timeline-item.expanded .timeline-toggle svg {
+    transform: rotate(180deg);
 }
 
 .timeline-narrative {
@@ -623,42 +648,107 @@ img {
 
 @media (max-width: 900px) {
     :root {
-        --section-pad: 5rem;
+        --section-pad: 3rem;
     }
 
     .hero {
         grid-template-columns: 1fr;
-        gap: 3rem;
-        padding-top: 10rem;
+        gap: 2rem;
+        padding-top: 8rem;
+        min-height: 70vh;
     }
 
     .hero-photo-wrap {
-        height: 400px;
-        max-width: 360px;
+        height: 280px;
+        max-width: 320px;
         margin: 0 auto;
     }
 
     .hero-name {
-        font-size: clamp(3.5rem, 12vw, 6rem);
+        font-size: clamp(3rem, 10vw, 5rem);
         margin-right: 0;
+    }
+
+    .hero-tagline {
+        font-size: 0.75rem;
+        margin-bottom: 1rem;
+    }
+
+    .hero-desc {
+        font-size: 1rem;
+        line-height: 1.7;
+        margin-bottom: 1.5rem;
     }
 
     .timeline-item {
         grid-template-columns: 1fr;
         gap: 0.5rem;
+        margin-bottom: 2rem;
     }
 
     .timeline-date {
         padding-top: 0;
+        font-size: 0.75rem;
+    }
+
+    .timeline-toggle {
+        display: block;
+    }
+
+    .timeline-narrative {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.4s ease, opacity 0.3s ease;
+        opacity: 0;
+    }
+
+    .timeline-item.expanded .timeline-narrative {
+        max-height: 1000px;
+        opacity: 1;
+    }
+
+    .timeline-company {
+        margin-bottom: 0.5rem;
     }
 
     .projects-grid {
-        grid-template-columns: 1fr;
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        gap: 1rem;
+        padding-bottom: 1rem;
+        margin: 0 -2rem;
+        padding-left: 2rem;
+        padding-right: 2rem;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .projects-grid::-webkit-scrollbar {
+        height: 6px;
+    }
+
+    .projects-grid::-webkit-scrollbar-track {
+        background: var(--border);
+    }
+
+    .projects-grid::-webkit-scrollbar-thumb {
+        background: var(--accent);
+        border-radius: 3px;
+    }
+
+    .project-card {
+        flex: 0 0 80vw;
+        scroll-snap-align: start;
     }
 
     .expertise-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 2rem;
+    }
+
+    .section-title {
+        font-size: clamp(1.8rem, 6vw, 2.5rem);
+        margin-bottom: 2rem;
     }
 
     .nav-links {
@@ -672,7 +762,7 @@ img {
 
 @media (max-width: 600px) {
     :root {
-        --section-pad: 4rem;
+        --section-pad: 2.5rem;
     }
 
     .nav-inner {
@@ -688,7 +778,7 @@ img {
     }
 
     .hero {
-        padding: 10rem 1.5rem 4rem;
+        padding: 7rem 1.5rem 3rem;
     }
 
     .section {
@@ -696,8 +786,17 @@ img {
         padding-right: 1.5rem;
     }
 
-    .expertise-grid {
-        grid-template-columns: 1fr;
+    .about-text {
+        font-size: 1rem;
+        line-height: 1.75;
+    }
+
+    .timeline-role {
+        font-size: 1.4rem;
+    }
+
+    .project-card {
+        flex: 0 0 85vw;
     }
 
     .scroll-indicator {
