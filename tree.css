@@ -88,7 +88,7 @@ body::after {
 #tree-svg {
     position: absolute;
     inset: 0;
-    width: 45% !important;
+    width: 43% !important;
     left: 0 !important;
 }
 
@@ -128,7 +128,7 @@ body::after {
 
 .beat {
     position: absolute;
-    right: clamp(1.2rem, 6vw, 6.5rem);
+    right: clamp(1rem, 2vw, 4rem);
     top: 50%;
     transform: translateY(-50%);
     width: min(440px, 88vw);
@@ -150,7 +150,7 @@ body::after {
 .beat-link:hover { text-decoration: underline; }
 
 /* — Hero beat: the botanical specimen label — */
-.beat-hero { top: auto; bottom: 9vh; transform: none; width: min(560px, 90vw); }
+.beat-hero { top: auto; bottom: 9vh; transform: none; width: min(560px, 45vw); }
 .specimen {
     font-size: .72rem; letter-spacing: .34em; text-transform: uppercase;
     color: var(--moss); font-weight: 700; margin-bottom: 1.1rem;
