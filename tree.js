@@ -12,7 +12,9 @@
     var REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var NS = 'http://www.w3.org/2000/svg';
 
-    var BASE_X = 500, BASE_Y = 820;
+    // tree planted left-of-centre (desktop) / centred (mobile) so content sits right
+    var MOBILE = window.matchMedia('(max-width: 780px)').matches;
+    var BASE_X = MOBILE ? 500 : 275, BASE_Y = 820;
     var MAX_DEPTH = 8;
     var PATH_BUDGET = 620;
 
@@ -296,6 +298,15 @@
 
     /* ————— Scroll wiring ————— */
     var st = null;
+    var idleOn = false;
+    var idleBase = 0;
+    var idleTween = null;
+
+    function currentProgress() {
+        if (!st) return 0;
+        return clamp01((window.scrollY - st.start) / (st.end - st.start));
+    }
+
     function wireScroll() {
         if (st) { st.kill(); st = null; }
         if (REDUCED) { render(1); return; }
@@ -305,9 +316,32 @@
             end: 'bottom bottom',
             pin: '#stage',
             scrub: 0.6,
-            onUpdate: function (self) { render(self.progress); }
+            onUpdate: function (self) {
+                // once the user takes over, stop the idle breathing
+                if (idleOn && self.progress > idleBase + 0.004) stopIdle();
+                render(self.progress);
+            }
         });
-        render(clamp01((window.scrollY - st.start) / (st.end - st.start)));
+        render(currentProgress());
+    }
+
+    /* ————— Idle: a living seedling that gently "breathes" before the first scroll ————— */
+    function startIdle() {
+        if (REDUCED || !st) return;
+        idleOn = true;
+        idleBase = currentProgress();
+        idleTween = gsap.to({ b: 0 }, {
+            b: 1, duration: 2.6, yoyo: true, repeat: -1, ease: 'sine.inOut',
+            onUpdate: function () {
+                if (!idleOn) return;
+                var breathe = this.targets()[0].b * 0.006;
+                render(idleBase + breathe);
+            }
+        });
+    }
+    function stopIdle() {
+        idleOn = false;
+        if (idleTween) { idleTween.kill(); idleTween = null; }
     }
 
     /* ————— Nav ————— */
@@ -353,8 +387,20 @@
     wireScroll();
     startSway();
 
+    // grow a seedling on load so the screen is alive before the first scroll
+    if (!REDUCED && st && currentProgress() < 0.05) {
+        var intro = { p: currentProgress() };
+        gsap.to(intro, {
+            p: 0.05, duration: 1.9, ease: 'power2.out', delay: 0.3,
+            onUpdate: function () { render(intro.p); },
+            onComplete: startIdle
+        });
+    } else {
+        startIdle();
+    }
+
     window.addEventListener('resize', function () {
         sizeMotes(); initMotes();
-        if (st) render(clamp01((window.scrollY - st.start) / (st.end - st.start)));
+        if (st) render(currentProgress());
     });
 })();

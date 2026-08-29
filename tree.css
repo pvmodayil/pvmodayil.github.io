@@ -89,9 +89,9 @@ body::after {
 
 /* soft volumetric light from the sun */
 .light-beam {
-    position: absolute; top: -20%; right: -10%;
-    width: 70%; height: 140%;
-    background: radial-gradient(ellipse 60% 50% at 60% 20%, rgba(240,194,101,.28), transparent 65%);
+    position: absolute; top: -20%; left: -12%;
+    width: 72%; height: 140%;
+    background: radial-gradient(ellipse 60% 50% at 40% 20%, rgba(240,194,101,.28), transparent 65%);
     pointer-events: none; mix-blend-mode: screen;
     animation: beamSway 14s ease-in-out infinite alternate;
 }
@@ -116,7 +116,7 @@ body::after {
 
 .beat {
     position: absolute;
-    left: clamp(1.2rem, 6vw, 6.5rem);
+    right: clamp(1.2rem, 6vw, 6.5rem);
     top: 50%;
     transform: translateY(-50%);
     width: min(440px, 88vw);
@@ -234,8 +234,10 @@ body::after {
 }
 
 /* ————— Small screens ————— */
-@media (max-width: 720px) {
+@media (max-width: 780px) {
     .nav-links a:not(.nav-cv) { display: none; }
+    /* tree recedes so text stays readable on narrow screens */
+    #tree-svg { opacity: .5; }
     .beat { background: rgba(246,241,229,.92); border-radius: 16px; padding: 1.2rem 1.3rem; box-shadow: 0 14px 40px -18px rgba(74,56,35,.5); }
     .beat-ring { padding: 0; background: none; box-shadow: none; }
     .beat-hero { background: none; box-shadow: none; padding: 0; }
