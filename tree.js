@@ -12,9 +12,9 @@
     var REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var NS = 'http://www.w3.org/2000/svg';
 
-    // tree planted left-of-centre (desktop) / centred (mobile) so content sits right
+    // tree on left, content on right
     var MOBILE = window.matchMedia('(max-width: 780px)').matches;
-    var BASE_X = MOBILE ? 500 : 275, BASE_Y = 820;
+    var BASE_X = MOBILE ? 350 : 120, BASE_Y = 820;
     var MAX_DEPTH = 8;
     var PATH_BUDGET = 620;
 
