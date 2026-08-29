@@ -14,7 +14,7 @@
 
     // tree on left, content on right
     var MOBILE = window.matchMedia('(max-width: 780px)').matches;
-    var BASE_X = MOBILE ? 350 : 120, BASE_Y = 820;
+    var BASE_X = MOBILE ? 350 : 220, BASE_Y = 820;
     var MAX_DEPTH = 8;
     var PATH_BUDGET = 620;
 
