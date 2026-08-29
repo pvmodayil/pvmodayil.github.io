@@ -4,17 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Philip Modayil — AI Engineer & Researcher</title>
-    <meta name="description" content="Philip Modayil — AI Engineer, Agentic AI, Data Scientist, and Automation & Robotics Engineer. A portfolio that grows.">
+    <meta name="description" content="Philip Modayil — AI Engineer, Agentic AI, Data Scientist, and Automation & Robotics Engineer.">
     <meta name="author" content="Philip Modayil">
     <meta property="og:title" content="Philip Modayil — AI Engineer & Researcher">
-    <meta property="og:description" content="A portfolio that grows: AI, robotics, and electronic design automation.">
+    <meta property="og:description" content="AI, robotics, and electronic design automation.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://pvmodayil.github.io/">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; script-src 'self' 'unsafe-inline'; frame-ancestors 'none';">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,400&family=Karla:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400&family=Karla:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="tree.css"/>
 </head>
 <body>
@@ -22,112 +22,148 @@
     <nav class="site-nav" id="site-nav">
         <a href="#top" class="nav-name">Philip Modayil</a>
         <div class="nav-links">
-            <a href="#grow-scene" data-goto="0.05">Seedling</a>
-            <a href="#grow-scene" data-goto="0.45">Rings</a>
-            <a href="#grow-scene" data-goto="0.95">Canopy</a>
-            <a href="Public/PhilipResumeHW.pdf" target="_blank" rel="noopener noreferrer" class="nav-cv">Download CV</a>
+            <a href="#grow-scene" data-goto="0.16">Roots</a>
+            <a href="#grow-scene" data-goto="0.42">Rings</a>
+            <a href="#grow-scene" data-goto="0.70">Branches</a>
+            <a href="#grow-scene" data-goto="0.93">Canopy</a>
+            <a href="Public/PhilipResumeHW.pdf" target="_blank" rel="noopener noreferrer" class="nav-cv">CV</a>
         </div>
     </nav>
 
-    <header class="hero" id="top">
-        <div class="hero-inner">
-            <p class="hero-kicker">A portfolio that grows</p>
-            <h1 class="hero-name">Philip<br>Modayil</h1>
-            <p class="hero-tagline">AI Engineer &amp; Researcher</p>
-            <p class="hero-desc">I grow systems — from silicon to software. Agentic AI, robotics, and electronic design automation.</p>
-        </div>
-        <div class="hero-seed" aria-hidden="true">
-            <svg viewBox="0 0 120 90" width="120" height="90">
-                <ellipse cx="60" cy="72" rx="56" ry="10" class="seed-soil"/>
-                <path d="M60 66 C 52 58, 52 46, 60 38 C 68 46, 68 58, 60 66 Z" class="seed-body"/>
-                <path d="M60 40 C 59 52, 59 58, 60 64" class="seed-crack"/>
+    <!-- The hero IS the scene. One continuous growing tree. -->
+    <section id="grow-scene" aria-label="Philip Modayil — career as a growing tree">
+        <div class="stage" id="stage">
+
+            <!-- Atmosphere -->
+            <div class="sky" aria-hidden="true"></div>
+            <div class="light-beam" aria-hidden="true"></div>
+            <canvas id="motes" aria-hidden="true"></canvas>
+
+            <!-- The tree -->
+            <svg id="tree-svg" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMax meet" aria-hidden="true">
+                <defs>
+                    <radialGradient id="sun-glow" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stop-color="#f0c265" stop-opacity="0.5"/>
+                        <stop offset="100%" stop-color="#f0c265" stop-opacity="0"/>
+                    </radialGradient>
+                    <linearGradient id="sky-grad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#eef0e2"/>
+                        <stop offset="55%" stop-color="#f6f1e5"/>
+                        <stop offset="100%" stop-color="#e9dfc8"/>
+                    </linearGradient>
+                </defs>
+                <rect width="1000" height="1000" fill="url(#sky-grad)"/>
+                <circle id="sun" cx="770" cy="170" r="230" fill="url(#sun-glow)"/>
+                <g id="roots-group"></g>
+                <g id="tree-group"></g>
+                <g id="leaves-group"></g>
+                <g id="rings-group"></g>
+                <line id="ground-line" x1="0" y1="820" x2="1000" y2="820"/>
+                <rect id="soil" x="0" y="820" width="1000" height="180"/>
             </svg>
-        </div>
-        <div class="scroll-cue" aria-hidden="true">
-            <span>Scroll to grow</span>
-            <div class="scroll-cue-line"></div>
-        </div>
-    </header>
 
-    <main>
-        <section id="grow-scene" aria-label="Career tree">
-            <div class="stage" id="stage">
-                <svg id="tree-svg" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMax meet" aria-hidden="true">
-                    <defs>
-                        <radialGradient id="sun-glow" cx="50%" cy="50%" r="50%">
-                            <stop offset="0%" stop-color="#e8b04b" stop-opacity="0.35"/>
-                            <stop offset="100%" stop-color="#e8b04b" stop-opacity="0"/>
-                        </radialGradient>
-                    </defs>
-                    <circle cx="780" cy="180" r="260" fill="url(#sun-glow)"/>
-                    <g id="roots-group"></g>
-                    <g id="tree-group"></g>
-                    <g id="leaves-group"></g>
-                    <g id="rings-group"></g>
-                    <line id="ground-line" x1="0" y1="820" x2="1000" y2="820"/>
-                    <rect id="soil" x="0" y="820" width="1000" height="180"/>
-                </svg>
+            <!-- Content beats, scrubbed over the growth -->
+            <div class="beats">
 
-                <div class="beats">
-                    <article class="beat" id="beat-about">
-                        <p class="beat-label">01 — The Seedling</p>
-                        <h2 class="beat-title">Engineering intelligence,<br>one system at a time.</h2>
-                        <p>AI Engineer at Deriv in the UAE, building automated systems that turn stakeholder requests into production-ready code — agentic AI, large language models, and full-stack automation pipelines.</p>
-                        <p>Previously at TU Dortmund University, applying hybrid AI to electronic design automation, with publications at IEEE APEMC.</p>
-                    </article>
+                <article class="beat beat-hero" id="beat-hero">
+                    <p class="specimen">Specimen · AI Engineer</p>
+                    <h1 class="hero-name">Philip<br>Modayil</h1>
+                    <p class="hero-line">I grow systems — from silicon to software.</p>
+                    <p class="hero-sub">Agentic AI · Robotics · Electronic Design Automation</p>
+                    <div class="hero-cue" aria-hidden="true"><span>Scroll</span><i></i></div>
+                </article>
 
-                    <article class="beat" id="beat-education">
-                        <p class="beat-label">02 — The Roots</p>
-                        <h2 class="beat-title">Where it all started.</h2>
-                        <div class="edu-item">
-                            <h3>M.Sc. Automation and Robotics</h3>
-                            <p class="meta">Technische Universität Dortmund, Germany</p>
-                        </div>
-                        <div class="edu-item">
-                            <h3>B.Tech. Electrical and Electronics Engineering</h3>
-                            <p class="meta">College of Engineering Trivandrum, India</p>
-                        </div>
-                    </article>
+                <article class="beat" id="beat-about">
+                    <p class="beat-label">01 — Seedling</p>
+                    <h2 class="beat-title">Engineering intelligence,<br>one system at a time.</h2>
+                    <p>AI Engineer at Deriv in the UAE, building automated systems that turn stakeholder requests into production-ready code — agentic AI, large language models, and full-stack automation pipelines.</p>
+                    <p>Previously at TU Dortmund University, applying hybrid AI to electronic design automation, published at IEEE APEMC.</p>
+                </article>
 
-                    <article class="beat beat-ring" id="beat-wilo">
-                        <p class="beat-label">03 — Growth Rings</p>
-                        <button class="ring-card" aria-expanded="false">
-                            <span class="ring-date">May 2022 — Sep 2024</span>
-                            <span class="ring-role">Data Scientist · Wilo SE, Germany</span>
-                            <span class="ring-narrative">Built a smart sensor system for predictive maintenance across a fleet of 100+ industrial pumps — real-time anomaly detection and failure prediction that cut signal processing time and prevented costly downtime.</span>
-                        </button>
-                    </article>
+                <article class="beat" id="beat-education">
+                    <p class="beat-label">02 — Roots</p>
+                    <h2 class="beat-title">Where it all started.</h2>
+                    <div class="edu-item">
+                        <h3>M.Sc. Automation and Robotics</h3>
+                        <p class="meta">Technische Universität Dortmund, Germany</p>
+                    </div>
+                    <div class="edu-item">
+                        <h3>B.Tech. Electrical &amp; Electronics Engineering</h3>
+                        <p class="meta">College of Engineering Trivandrum, India</p>
+                    </div>
+                </article>
 
-                    <article class="beat beat-ring" id="beat-tud">
-                        <button class="ring-card" aria-expanded="false">
-                            <span class="ring-date">Oct 2024 — Apr 2026</span>
-                            <span class="ring-role">AI Engineer — Research · TU Dortmund University</span>
-                            <span class="ring-narrative">Developed a multimodal AI assistant for PCB designers that cut prototype review time by a quarter, and a physics-informed model combining reinforcement learning with genetic algorithms for transmission line design. Led explainable-AI work for sleep apnea prediction.</span>
-                        </button>
-                    </article>
+                <article class="beat beat-ring" id="beat-wilo">
+                    <p class="beat-label">03 — Growth Rings</p>
+                    <button class="ring-card" aria-expanded="false">
+                        <span class="ring-date">May 2022 — Sep 2024</span>
+                        <span class="ring-role">Data Scientist · Wilo SE</span>
+                        <span class="ring-narrative">Built a smart sensor system for predictive maintenance across a fleet of 100+ industrial pumps — real-time anomaly detection and failure prediction that cut signal processing time and prevented costly downtime.</span>
+                    </button>
+                </article>
 
-                    <article class="beat beat-ring" id="beat-deriv">
-                        <button class="ring-card" aria-expanded="false">
-                            <span class="ring-date">Apr 2026 — Present</span>
-                            <span class="ring-role">AI Engineer · Deriv, UAE</span>
-                            <span class="ring-narrative">Building a fully automated SDLC pipeline: stakeholder requests in Slack become ClickUp cards, GitHub issues, and pull requests with working implementations — humans in the loop for plan verification and reviews.</span>
-                        </button>
-                    </article>
+                <article class="beat beat-ring" id="beat-tud">
+                    <button class="ring-card" aria-expanded="false">
+                        <span class="ring-date">Oct 2024 — Apr 2026</span>
+                        <span class="ring-role">AI Engineer — Research · TU Dortmund</span>
+                        <span class="ring-narrative">Developed a multimodal AI assistant for PCB designers that cut prototype review time by a quarter, and a physics-informed model combining reinforcement learning with genetic algorithms for transmission-line design. Led explainable-AI work for sleep-apnea prediction.</span>
+                    </button>
+                </article>
 
-                    <article class="beat" id="beat-canopy">
-                        <p class="beat-label">04 — The Canopy</p>
-                        <h2 class="beat-title">Projects &amp; research bloom up here.</h2>
-                        <p>In the full build, the branches carry fruit — selected projects — and blossoms for each publication. This prototype stops at the first leaves.</p>
-                    </article>
-                </div>
+                <article class="beat beat-ring" id="beat-deriv">
+                    <button class="ring-card" aria-expanded="false">
+                        <span class="ring-date">Apr 2026 — Present</span>
+                        <span class="ring-role">AI Engineer · Deriv, UAE</span>
+                        <span class="ring-narrative">Building a fully automated SDLC pipeline: stakeholder requests in Slack become ClickUp cards, GitHub issues, and pull requests with working implementations — humans in the loop for plan verification and reviews.</span>
+                    </button>
+                </article>
+
+                <article class="beat" id="beat-projects">
+                    <p class="beat-label">04 — Branches</p>
+                    <h2 class="beat-title">Work that bore fruit.</h2>
+                    <ul class="fruit-list">
+                        <li><strong>Hazard Inspection</strong><span>BMW Innovation Challenge — vision transformers scanning drone imagery for site safety.</span></li>
+                        <li><strong>Police Report Insight</strong><span>Young AI Leaders — RAG over police documents into clear dashboards.</span></li>
+                        <li><strong>ragyphi</strong><span>Personal — ask questions over your documents, get direct answers.</span></li>
+                        <li><strong>Online Job Scheduling</strong><span>Academic — reinforcement learning for resource-constrained planning.</span></li>
+                    </ul>
+                </article>
+
+                <article class="beat" id="beat-research">
+                    <p class="beat-label">05 — Blossoms</p>
+                    <h2 class="beat-title">Published work.</h2>
+                    <p>Hybrid AI for electronic design automation — deep reinforcement learning with genetic algorithms for PCB transmission-line optimization, and multimodal assistants for circuit designers. Published at IEEE APEMC; DLR contributions on LLM-assisted co-design.</p>
+                    <a href="./pages/research-focus.html" class="beat-link">View publications →</a>
+                </article>
+
+                <article class="beat" id="beat-expertise">
+                    <p class="beat-label">06 — Foliage</p>
+                    <h2 class="beat-title">What I work with.</h2>
+                    <div class="skill-cols">
+                        <div><h4>Machine Learning</h4><p>PyTorch · RL · LLM &amp; RAG · CV</p></div>
+                        <div><h4>Programming</h4><p>Python · C++ · Git · Docker</p></div>
+                        <div><h4>Data &amp; Cloud</h4><p>Azure · PySpark · Data Science</p></div>
+                    </div>
+                </article>
+
+                <article class="beat beat-canopy" id="beat-canopy">
+                    <p class="beat-label">07 — Canopy</p>
+                    <h2 class="beat-title">Let's build something<br>that grows.</h2>
+                    <div class="contact-links">
+                        <a href="mailto:philipv.modayil@gmail.com">Email</a>
+                        <a href="https://www.linkedin.com/in/philipmodayil" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                        <a href="Public/PhilipResumeHW.pdf" target="_blank" rel="noopener noreferrer">CV</a>
+                    </div>
+                </article>
+
             </div>
-        </section>
-    </main>
+        </div>
+    </section>
 
     <footer class="site-footer">
         <p class="footer-note">This tree was grown by an algorithm — a new one grows on every visit.</p>
         <button id="regrow" class="regrow-btn" type="button">Grow a new tree</button>
-        <p class="footer-copy">&copy; 2025–2026 Philip Modayil · Concept prototype — “The Growing Tree”</p>
+        <p class="footer-copy">&copy; 2025–2026 Philip Modayil</p>
     </footer>
 
     <script src="vendor/gsap.min.js"></script>
