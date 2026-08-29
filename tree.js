@@ -235,6 +235,8 @@
                 else v = 1 - (p - w.c) / (w.d - w.c);
             }
             var isHero = b.el.id === 'beat-hero';
+            // the hero never fully disappears while idle — the seedling + name stay on screen
+            if (isHero && idleOn) v = Math.max(v, 1);
             b.el.style.opacity = v.toFixed(3);
             b.el.style.visibility = v > 0.01 ? 'visible' : 'hidden';
             if (!isHero) b.el.style.transform = 'translateY(calc(-50% + ' + ((1 - v) * 24).toFixed(1) + 'px))';
@@ -317,8 +319,11 @@
             pin: '#stage',
             scrub: 0.6,
             onUpdate: function (self) {
-                // once the user takes over, stop the idle breathing
-                if (idleOn && self.progress > idleBase + 0.004) stopIdle();
+                // while idling at the top, ignore tiny scroll jitter — the idle loop owns the render
+                if (idleOn) {
+                    if (self.progress > idleBase + 0.004) stopIdle();
+                    else return;
+                }
                 render(self.progress);
             }
         });
@@ -326,10 +331,12 @@
     }
 
     /* ————— Idle: a living seedling that gently "breathes" before the first scroll ————— */
+    var IDLE_LEVEL = 0.05; // a small, always-visible seedling
     function startIdle() {
         if (REDUCED || !st) return;
         idleOn = true;
-        idleBase = currentProgress();
+        idleBase = Math.max(currentProgress(), IDLE_LEVEL);
+        render(idleBase); // guarantee a visible seedling + hero immediately
         idleTween = gsap.to({ b: 0 }, {
             b: 1, duration: 2.6, yoyo: true, repeat: -1, ease: 'sine.inOut',
             onUpdate: function () {
@@ -388,15 +395,17 @@
     startSway();
 
     // grow a seedling on load so the screen is alive before the first scroll
-    if (!REDUCED && st && currentProgress() < 0.05) {
-        var intro = { p: currentProgress() };
+    if (!REDUCED) {
+        idleOn = true; // hero + seedling stay visible from the very first frame
+        var intro = { p: 0 };
+        render(0);
         gsap.to(intro, {
-            p: 0.05, duration: 1.9, ease: 'power2.out', delay: 0.3,
+            p: IDLE_LEVEL, duration: 1.9, ease: 'power2.out', delay: 0.3,
             onUpdate: function () { render(intro.p); },
             onComplete: startIdle
         });
     } else {
-        startIdle();
+        render(1);
     }
 
     window.addEventListener('resize', function () {
