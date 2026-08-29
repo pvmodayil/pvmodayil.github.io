@@ -3,265 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Philip Modayil - AI Engineer, Agentic AI, & Data Scientist</title>
-    <meta name="description" content="Philip Modayil - AI Engineer, Agentic AI, Data Scientist, and Automation & Robotics Engineer based in Dortmund, Germany. Explore research, projects, and expertise in AI, Data Science and Robotics.">
-    <meta name="keywords" content="Philip Modayil, AI Engineer, Agentic AI, LLM, NLP, Computer Vision, Data Scientist, Automation, Robotics, PCB Design, Reinforcement Learning, Genetic Algorithms, Dortmund, Germany">
+    <title>Philip Modayil — AI Engineer & Researcher</title>
+    <meta name="description" content="Philip Modayil — AI Engineer, Agentic AI, Data Scientist, and Automation & Robotics Engineer. A portfolio that grows.">
     <meta name="author" content="Philip Modayil">
-    <meta property="og:title" content="Philip Modayil - AI Engineer, Agentic AI, & Data Scientist">
-    <meta property="og:description" content="Explore Philip Modayil's research, projects, and expertise in AI, Agentic AI, PCB design, and industrial automation.">
-    <meta property="og:image" content="https://pvmodayil.github.io/Public/profilepicsuit.jpg">
+    <meta property="og:title" content="Philip Modayil — AI Engineer & Researcher">
+    <meta property="og:description" content="A portfolio that grows: AI, robotics, and electronic design automation.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://pvmodayil.github.io/">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; script-src 'self' 'unsafe-inline'; frame-ancestors 'none';">
     <meta name="referrer" content="strict-origin-when-cross-origin">
-    <link rel="stylesheet" href="styles.css"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,400&family=Karla:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="tree.css"/>
 </head>
 <body>
 
-    <nav class="site-nav">
-        <div class="nav-inner">
-            <a href="#" class="nav-name">Philip Modayil</a>
-            <ul class="nav-links">
-                <li><a href="#about">About</a></li>
-                <li><a href="#experience">Experience</a></li>
-                <li><a href="#projects">Work</a></li>
-                <li><a href="#research">Research</a></li>
-                <li><a href="#expertise">Expertise</a></li>
-                <li><a href="#education">Education</a></li>
-                <li><a href="./pages/gallery.html">Gallery</a></li>
-            </ul>
+    <nav class="site-nav" id="site-nav">
+        <a href="#top" class="nav-name">Philip Modayil</a>
+        <div class="nav-links">
+            <a href="#grow-scene" data-goto="0.05">Seedling</a>
+            <a href="#grow-scene" data-goto="0.45">Rings</a>
+            <a href="#grow-scene" data-goto="0.95">Canopy</a>
+            <a href="Public/PhilipResumeHW.pdf" target="_blank" rel="noopener noreferrer" class="nav-cv">Download CV</a>
         </div>
     </nav>
 
-    <header class="hero">
-        <div class="hero-content">
+    <header class="hero" id="top">
+        <div class="hero-inner">
+            <p class="hero-kicker">A portfolio that grows</p>
             <h1 class="hero-name">Philip<br>Modayil</h1>
-            <div class="hero-rule"></div>
             <p class="hero-tagline">AI Engineer &amp; Researcher</p>
-            <p class="hero-desc">Building intelligent systems at the intersection of AI, robotics, and electronic design automation. Currently at Deriv, UAE.</p>
-            <div class="hero-links">
-                <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#112;&#104;&#105;&#108;&#105;&#112;&#118;&#46;&#109;&#111;&#100;&#97;&#121;&#105;&#108;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;">Email</a>
-                <a href="https://www.linkedin.com/in/philipmodayil" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-            </div>
+            <p class="hero-desc">I grow systems — from silicon to software. Agentic AI, robotics, and electronic design automation.</p>
         </div>
-        <div class="hero-photo-wrap">
-            <div class="hero-photo-frame"></div>
-            <img src="Public/profilepicsuit.jpg" alt="Philip Modayil" class="hero-photo"/>
+        <div class="hero-seed" aria-hidden="true">
+            <svg viewBox="0 0 120 90" width="120" height="90">
+                <ellipse cx="60" cy="72" rx="56" ry="10" class="seed-soil"/>
+                <path d="M60 66 C 52 58, 52 46, 60 38 C 68 46, 68 58, 60 66 Z" class="seed-body"/>
+                <path d="M60 40 C 59 52, 59 58, 60 64" class="seed-crack"/>
+            </svg>
         </div>
-        <div class="scroll-indicator">
-            <div class="scroll-line"></div>
-            <span>Scroll</span>
+        <div class="scroll-cue" aria-hidden="true">
+            <span>Scroll to grow</span>
+            <div class="scroll-cue-line"></div>
         </div>
     </header>
 
     <main>
-        <hr class="section-rule">
+        <section id="grow-scene" aria-label="Career tree">
+            <div class="stage" id="stage">
+                <svg id="tree-svg" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMax meet" aria-hidden="true">
+                    <defs>
+                        <radialGradient id="sun-glow" cx="50%" cy="50%" r="50%">
+                            <stop offset="0%" stop-color="#e8b04b" stop-opacity="0.35"/>
+                            <stop offset="100%" stop-color="#e8b04b" stop-opacity="0"/>
+                        </radialGradient>
+                    </defs>
+                    <circle cx="780" cy="180" r="260" fill="url(#sun-glow)"/>
+                    <g id="roots-group"></g>
+                    <g id="tree-group"></g>
+                    <g id="leaves-group"></g>
+                    <g id="rings-group"></g>
+                    <line id="ground-line" x1="0" y1="820" x2="1000" y2="820"/>
+                    <rect id="soil" x="0" y="820" width="1000" height="180"/>
+                </svg>
 
-        <section id="about" class="section">
-            <div class="reveal">
-                <p class="section-label">01 &mdash; About</p>
-                <h2 class="section-title">Engineering intelligence,<br>one system at a time.</h2>
-            </div>
-            <p class="about-text reveal reveal-delay-1">I am an AI Engineer at Deriv in the UAE, where I build automated systems that transform stakeholder requests into production-ready code. My work spans agentic AI, large language models, and full-stack automation pipelines.</p>
-            <p class="about-text reveal reveal-delay-2">Previously, I was a Research Assistant at TU Dortmund University, applying cutting-edge AI techniques to electronic design automation. My research centers on novel approaches to PCB design and signal processing using hybrid AI techniques, with publications at IEEE APEMC.</p>
-        </section>
+                <div class="beats">
+                    <article class="beat" id="beat-about">
+                        <p class="beat-label">01 — The Seedling</p>
+                        <h2 class="beat-title">Engineering intelligence,<br>one system at a time.</h2>
+                        <p>AI Engineer at Deriv in the UAE, building automated systems that turn stakeholder requests into production-ready code — agentic AI, large language models, and full-stack automation pipelines.</p>
+                        <p>Previously at TU Dortmund University, applying hybrid AI to electronic design automation, with publications at IEEE APEMC.</p>
+                    </article>
 
-        <hr class="section-rule">
+                    <article class="beat" id="beat-education">
+                        <p class="beat-label">02 — The Roots</p>
+                        <h2 class="beat-title">Where it all started.</h2>
+                        <div class="edu-item">
+                            <h3>M.Sc. Automation and Robotics</h3>
+                            <p class="meta">Technische Universität Dortmund, Germany</p>
+                        </div>
+                        <div class="edu-item">
+                            <h3>B.Tech. Electrical and Electronics Engineering</h3>
+                            <p class="meta">College of Engineering Trivandrum, India</p>
+                        </div>
+                    </article>
 
-        <section id="experience" class="section">
-            <div class="reveal">
-                <p class="section-label">02 &mdash; Experience</p>
-                <h2 class="section-title">Where I've worked.</h2>
-            </div>
-
-            <div class="timeline-item reveal reveal-delay-1 expanded">
-                <div class="timeline-date">Apr 2026 &mdash; Present</div>
-                <div>
-                    <div class="timeline-header">
-                        <h3 class="timeline-role">AI Engineer</h3>
-                        <p class="timeline-company">Deriv, UAE</p>
-                        <button class="timeline-toggle" aria-label="Toggle details">
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                            </svg>
+                    <article class="beat beat-ring" id="beat-wilo">
+                        <p class="beat-label">03 — Growth Rings</p>
+                        <button class="ring-card" aria-expanded="false">
+                            <span class="ring-date">May 2022 — Sep 2024</span>
+                            <span class="ring-role">Data Scientist · Wilo SE, Germany</span>
+                            <span class="ring-narrative">Built a smart sensor system for predictive maintenance across a fleet of 100+ industrial pumps — real-time anomaly detection and failure prediction that cut signal processing time and prevented costly downtime.</span>
                         </button>
-                    </div>
-                    <div class="timeline-narrative">
-                        <p>At Deriv, I'm building the future of software development automation. My flagship project is a fully automated SDLC pipeline that transforms how engineering teams work. When stakeholders submit feature requests or bug reports in Slack, the system analyzes them, creates ClickUp cards and GitHub issues, and generates pull requests with working code implementations. The pipeline handles the entire workflow while keeping humans in the loop for implementation plan verification and PR reviews.</p>
-                    </div>
-                </div>
-            </div>
+                    </article>
 
-            <div class="timeline-item reveal reveal-delay-2">
-                <div class="timeline-date">Oct 2024 &mdash; Apr 2026</div>
-                <div>
-                    <div class="timeline-header">
-                        <h3 class="timeline-role">AI Engineer &mdash; Research</h3>
-                        <p class="timeline-company">DT/IPL, TU Dortmund University, Germany</p>
-                        <button class="timeline-toggle" aria-label="Toggle details">
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                            </svg>
+                    <article class="beat beat-ring" id="beat-tud">
+                        <button class="ring-card" aria-expanded="false">
+                            <span class="ring-date">Oct 2024 — Apr 2026</span>
+                            <span class="ring-role">AI Engineer — Research · TU Dortmund University</span>
+                            <span class="ring-narrative">Developed a multimodal AI assistant for PCB designers that cut prototype review time by a quarter, and a physics-informed model combining reinforcement learning with genetic algorithms for transmission line design. Led explainable-AI work for sleep apnea prediction.</span>
                         </button>
-                    </div>
-                    <div class="timeline-narrative">
-                        <p>My research at TU Dortmund focused on making electronic design more intelligent and accessible. I developed an AI assistant that helps PCB designers by analyzing circuit files, visual layouts, and simulations. The system automates routine tasks and provides intelligent recommendations, cutting prototype review time by a quarter while significantly improving accuracy.</p>
-                        <p>I also built a physics-informed model for predicting transmission line behavior on PCBs, combining reinforcement learning with genetic algorithms. This hybrid approach dramatically accelerated the design exploration process. Alongside this, I led work on explainable AI for healthcare, developing transparent models that predict sleep apnea episodes from patient sensor data with improved reliability and interpretability.</p>
-                    </div>
-                </div>
-            </div>
+                    </article>
 
-            <div class="timeline-item reveal reveal-delay-3">
-                <div class="timeline-date">May 2022 &mdash; Sep 2024</div>
-                <div>
-                    <div class="timeline-header">
-                        <h3 class="timeline-role">Data Scientist</h3>
-                        <p class="timeline-company">Wilo SE, Germany</p>
-                        <button class="timeline-toggle" aria-label="Toggle details">
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                            </svg>
+                    <article class="beat beat-ring" id="beat-deriv">
+                        <button class="ring-card" aria-expanded="false">
+                            <span class="ring-date">Apr 2026 — Present</span>
+                            <span class="ring-role">AI Engineer · Deriv, UAE</span>
+                            <span class="ring-narrative">Building a fully automated SDLC pipeline: stakeholder requests in Slack become ClickUp cards, GitHub issues, and pull requests with working implementations — humans in the loop for plan verification and reviews.</span>
                         </button>
-                    </div>
-                    <div class="timeline-narrative">
-                        <p>At Wilo SE, I built a smart sensor system that transformed how the company monitors its industrial pump fleet. The predictive maintenance platform tracks over 100 pumps in real-time, detecting anomalies and predicting failures before they happen. The system significantly reduced signal processing time and improved fault prediction accuracy, giving maintenance teams the insights they need to prevent costly downtime.</p>
-                    </div>
+                    </article>
+
+                    <article class="beat" id="beat-canopy">
+                        <p class="beat-label">04 — The Canopy</p>
+                        <h2 class="beat-title">Projects &amp; research bloom up here.</h2>
+                        <p>In the full build, the branches carry fruit — selected projects — and blossoms for each publication. This prototype stops at the first leaves.</p>
+                    </article>
                 </div>
-            </div>
-        </section>
-
-        <hr class="section-rule">
-
-        <section id="projects" class="section">
-            <div class="reveal">
-                <p class="section-label">03 &mdash; Selected Work</p>
-                <h2 class="section-title">Projects that matter.</h2>
-            </div>
-
-            <div class="projects-grid">
-                <div class="project-card reveal reveal-delay-1">
-                    <h3>Hazard Inspection</h3>
-                    <p class="meta">BMW Innovation Challenge 2024</p>
-                    <p>Developed software that scans drone images for safety risks on industrial sites using vision transformers, so safety teams can focus on the most critical areas first.</p>
-                    <div class="project-tags">
-                        <span>Computer Vision</span>
-                        <span>VLM</span>
-                        <span>Streamlit</span>
-                        <span>Industrial AI</span>
-                    </div>
-                </div>
-
-                <div class="project-card reveal reveal-delay-2">
-                    <h3>Police Report Insight</h3>
-                    <p class="meta">Young AI Leaders Dortmund</p>
-                    <p>Built a system that reads police documents with an AI model and turns them into clear dashboards, helping non-technical staff quickly spot trends and risks.</p>
-                    <div class="project-tags">
-                        <span>Python</span>
-                        <span>Ollama</span>
-                        <span>Web Scrape</span>
-                        <span>RAG</span>
-                    </div>
-                </div>
-
-                <div class="project-card reveal reveal-delay-3">
-                    <h3>ragyphi</h3>
-                    <p class="meta">Personal</p>
-                    <p>Created a library that lets users ask questions over their documents (text, tables, images) and get direct answers instead of manually searching through files.</p>
-                    <div class="project-tags">
-                        <span>Python</span>
-                        <span>Ollama</span>
-                        <span>RAG</span>
-                    </div>
-                </div>
-
-                <div class="project-card reveal reveal-delay-4">
-                    <h3>Online Job Scheduling</h3>
-                    <p class="meta">Academic</p>
-                    <p>Trained an AI model that learns how to schedule jobs when resources are limited, demonstrating how reinforcement learning can improve planning decisions.</p>
-                    <div class="project-tags">
-                        <span>Python</span>
-                        <span>Reinforcement Learning</span>
-                        <span>Job Scheduling</span>
-                        <span>Algorithms</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <hr class="section-rule">
-
-        <section id="research" class="section">
-            <div class="reveal">
-                <p class="section-label">04 &mdash; Research</p>
-                <h2 class="section-title">Published work.</h2>
-            </div>
-            <p class="research-text reveal reveal-delay-1">My research explores hybrid AI approaches for electronic design automation, combining deep reinforcement learning with genetic algorithms for PCB transmission line optimization, and developing multimodal AI assistants for circuit designers. I've published at IEEE APEMC and contributed to DLR publications on LLM-assisted co-design.</p>
-            <a href="./pages/research-focus.html" class="research-link reveal reveal-delay-2">View publications &rarr;</a>
-        </section>
-
-        <hr class="section-rule">
-
-        <section id="expertise" class="section">
-            <div class="reveal">
-                <p class="section-label">05 &mdash; Expertise</p>
-                <h2 class="section-title">What I work with.</h2>
-            </div>
-
-            <div class="expertise-grid reveal reveal-delay-1">
-                <div class="expertise-col">
-                    <h3>Machine Learning</h3>
-                    <ul>
-                        <li>PyTorch</li>
-                        <li>Reinforcement Learning</li>
-                        <li>LLM &amp; RAG</li>
-                        <li>Computer Vision</li>
-                    </ul>
-                </div>
-                <div class="expertise-col">
-                    <h3>Programming</h3>
-                    <ul>
-                        <li>Python</li>
-                        <li>C++</li>
-                        <li>Git</li>
-                        <li>Docker</li>
-                    </ul>
-                </div>
-                <div class="expertise-col">
-                    <h3>Data &amp; Cloud</h3>
-                    <ul>
-                        <li>Azure</li>
-                        <li>PySpark</li>
-                        <li>Data Science</li>
-                        <li>Predictive Analytics</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <hr class="section-rule">
-
-        <section id="education" class="section">
-            <div class="reveal">
-                <p class="section-label">06 &mdash; Education</p>
-                <h2 class="section-title">Academic background.</h2>
-            </div>
-
-            <div class="edu-item reveal reveal-delay-1">
-                <h3>M.Sc. Automation and Robotics</h3>
-                <p class="meta">Technische Universit&auml;t Dortmund, Germany</p>
-            </div>
-
-            <div class="edu-item reveal reveal-delay-2">
-                <h3>B.Tech. Electrical and Electronics Engineering</h3>
-                <p class="meta">College of Engineering Trivandrum (Kerala Technological University), India</p>
             </div>
         </section>
     </main>
 
     <footer class="site-footer">
-        <p>&copy; 2025&ndash;2026 Philip Modayil</p>
+        <p class="footer-note">This tree was grown by an algorithm — a new one grows on every visit.</p>
+        <button id="regrow" class="regrow-btn" type="button">Grow a new tree</button>
+        <p class="footer-copy">&copy; 2025–2026 Philip Modayil · Concept prototype — “The Growing Tree”</p>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="vendor/gsap.min.js"></script>
+    <script src="vendor/ScrollTrigger.min.js"></script>
+    <script src="tree.js"></script>
 </body>
 </html>
