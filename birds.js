@@ -98,8 +98,11 @@
 
     function arrive() {
         if (state !== 'waiting') return;
-        // wait until the tree has actually grown its canopy
-        if (!canopyReady) { schedule(1200); return; }
+        // wait until the tree has actually grown (branches/canopy present), poll if not yet
+        if (!canopyReady) {
+            if (A.progress() > 0.6) { canopyReady = true; }
+            else { schedule(1100); return; }
+        }
         var spot = landingSpot();
         if (!spot) { schedule(4000); return; }
         landed = spot;
@@ -142,9 +145,9 @@
 
     // take off when the visitor reaches the canopy
     A.on('progress', function (p) {
-        if (!canopyReady && p > 0.85) {
+        if (!canopyReady && p > 0.6) {
             canopyReady = true;
-            if (state === 'waiting') schedule(900);
+            if (state === 'waiting') schedule(800);
         }
         if (p > 0.95 && state === 'landed') takeoff();
     });
@@ -164,8 +167,8 @@
         if (bird && bird.parentNode) bird.parentNode.removeChild(bird);
         bird = null; state = 'waiting';
         rand = prng((A.seed ^ 0xB17D) >>> 0);
-        canopyReady = A.progress() > 0.85;
-        schedule(canopyReady ? 2500 : 2000);
+        canopyReady = A.progress() > 0.6;
+        schedule(canopyReady ? 1500 : 1500);
     });
 
     schedule(2000);
