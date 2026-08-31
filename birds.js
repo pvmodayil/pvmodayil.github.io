@@ -91,7 +91,8 @@
         landed = spot;
         state = 'incoming';
         bird = makeBird();
-        svg.appendChild(bird);
+        // nest in the canopy group so a landed bird sways with the branches
+        A.leavesGroup.appendChild(bird);
         var from = { x: -80, y: 140 + rand() * 160 };
         fly(from, landed, 3.4 + rand() * 1.2, function () {
             state = 'landed';
