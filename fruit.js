@@ -177,6 +177,7 @@
         });
         backdrop.hidden = false;
         sheet.hidden = false;
+        sheetOpen = true;
         requestAnimationFrame(function () {
             backdrop.classList.add('show');
             sheet.classList.add('show');
@@ -191,6 +192,8 @@
             sheet.hidden = true;
             if (lastOpened) respawn(lastOpened);
             lastOpened = null;
+            sheetOpen = false;
+            syncReveal(A.progress(), false);
         }, 420);
     }
 
@@ -289,7 +292,8 @@
         if (!fruitLayer) {
             fruitLayer = document.createElementNS(NS, 'g');
             fruitLayer.setAttribute('id', 'fruit-group');
-            document.getElementById('tree-svg').appendChild(fruitLayer);
+            // live INSIDE the canopy group so wind sway carries the fruit too
+            A.leavesGroup.appendChild(fruitLayer);
         }
         fruitLayer.innerHTML = '';
         fruits = [];
@@ -304,30 +308,44 @@
             f = makeBlossom(PUBLICATIONS[i], spots[PROJECTS.length + i].x, spots[PROJECTS.length + i].y);
             fruitLayer.appendChild(f.g); fruits.push(f); bind(f);
         }
-        revealed = A.progress() > 0.72;
-        if (revealed) revealAll(true);
+        revealed = false;
+        syncReveal(A.progress(), true);
     }
 
-    function revealAll(instant) {
+    function setReveal(on, instant) {
+        if (on === revealed) return;
+        revealed = on;
         fruits.forEach(function (f, i) {
-            if (instant || A.REDUCED) {
-                f.g.style.transform = 'scale(1)';
-                return;
+            if (f.bob) { f.bob.kill(); f.bob = null; }
+            if (on) {
+                if (instant || A.REDUCED) {
+                    gsap.set(f.g, { scale: 1, y: 0, rotation: 0, opacity: 1 });
+                    startBob(f, i);
+                } else {
+                    gsap.fromTo(f.g, { scale: 0, y: 0, rotation: 0, opacity: 1 }, {
+                        scale: 1, duration: 0.6, delay: i * 0.08, ease: 'back.out(2.2)',
+                        clearProps: 'transform',
+                        onComplete: function () { startBob(f, i); }
+                    });
+                }
+            } else {
+                if (A.REDUCED) { gsap.set(f.g, { scale: 0 }); return; }
+                gsap.to(f.g, {
+                    scale: 0, duration: 0.35, ease: 'back.in(1.4)',
+                    onComplete: function () { gsap.set(f.g, { y: 0, rotation: 0, opacity: 1 }); }
+                });
             }
-            gsap.fromTo(f.g, { scale: 0 }, {
-                scale: 1, duration: 0.6, delay: i * 0.08, ease: 'back.out(2.2)',
-                clearProps: 'transform'
-            });
         });
-        // gentle individual bob
-        fruits.forEach(function (f, i) { startBob(f, i); });
+    }
+
+    var sheetOpen = false;
+    function syncReveal(p, instant) {
+        if (p > 0.72) setReveal(true, instant);
+        else if (p < 0.70) setReveal(false, false);
     }
 
     A.on('progress', function (p) {
-        if (!revealed && p > 0.72) {
-            revealed = true;
-            revealAll(false);
-        }
+        if (!sheetOpen) syncReveal(p, false);
     });
 
     A.on('rebuild', place);
