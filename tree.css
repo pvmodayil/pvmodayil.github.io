@@ -16,6 +16,40 @@
     --gold: #f0c265;
     --font-display: "Fraunces", Georgia, serif;
     --font-body: "Karla", "Segoe UI", sans-serif;
+    /* themeable scene colors */
+    --sky-1: #eef0e2;
+    --sky-2: #f6f1e5;
+    --sky-3: #e9dfc8;
+    --sun-glow: #f0c265;
+    --branch: #1c2b1d;
+    --root-c: #4a3823;
+    --soil-c: #4a3823;
+    --soil-c-op: 0.16;
+    --card-bg: rgba(246,241,229,.9);
+    --card-border: rgba(28,43,29,.22);
+}
+
+[data-theme="night"] {
+    --paper: #10161f;
+    --paper-deep: #0b1017;
+    --ink: #dfe8e4;
+    --ink-soft: #9fb0ad;
+    --moss: #6f8f6a;
+    --leaf: #4e6b45;
+    --leaf-light: #6f8f5e;
+    --terra: #d98a5f;
+    --soil: #2a2433;
+    --gold: #8fa3c8;
+    --sky-1: #0d1526;
+    --sky-2: #131c2e;
+    --sky-3: #1a2438;
+    --sun-glow: #cfd8ea;
+    --branch: #b8c6bd;
+    --root-c: #5a4a63;
+    --soil-c: #241f2e;
+    --soil-c-op: 0.35;
+    --card-bg: rgba(19,28,46,.92);
+    --card-border: rgba(223,232,228,.18);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -57,7 +91,7 @@ body::after {
     transition: background .35s ease, box-shadow .35s ease, padding .35s ease;
 }
 .site-nav.scrolled {
-    background: rgba(246,241,229,.9);
+    background: var(--card-bg);
     backdrop-filter: blur(10px);
     box-shadow: 0 1px 0 rgba(28,43,29,.1);
     padding-top: .7rem; padding-bottom: .7rem;
@@ -83,7 +117,7 @@ body::after {
 
 .stage { height: 100vh; height: 100svh; width: 100%; overflow: hidden; position: relative; }
 
-.sky { position: absolute; inset: 0; background: linear-gradient(to bottom, #e9edda 0%, var(--paper) 50%, var(--paper-deep) 82%, #ddd0b2 100%); }
+.sky { position: absolute; inset: 0; z-index: 0; background: linear-gradient(to bottom, var(--sky-1) 0%, var(--sky-2) 50%, var(--sky-3) 82%, var(--sky-3) 100%); transition: background 1s ease; }
 
 #tree-svg {
     position: absolute;
@@ -95,6 +129,7 @@ body::after {
 /* soft volumetric light from the sun */
 .light-beam {
     position: absolute; top: -20%; left: -12%;
+    z-index: 7;
     width: 72%; height: 140%;
     background: radial-gradient(ellipse 60% 50% at 40% 20%, rgba(240,194,101,.28), transparent 65%);
     pointer-events: none; mix-blend-mode: screen;
@@ -102,15 +137,15 @@ body::after {
 }
 @keyframes beamSway { from{transform:rotate(-2deg) translateX(-2%)} to{transform:rotate(2.5deg) translateX(2%)} }
 
-#motes { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+#motes { position: absolute; inset: 0; z-index: 5; width: 100%; height: 100%; pointer-events: none; }
 
-#ground-line { stroke: var(--soil); stroke-width: 3; }
-#soil { fill: var(--soil); opacity: .16; }
+#ground-line { stroke: var(--soil-c); stroke-width: 3; transition: stroke 1s ease; }
+#soil { fill: var(--soil-c); opacity: var(--soil-c-op); transition: fill 1s ease, opacity 1s ease; }
 
-#tree-group path { fill: none; stroke: var(--ink); stroke-linecap: round; }
-#roots-group path { fill: none; stroke: var(--soil); stroke-linecap: round; opacity: .8; }
+#tree-group path { fill: none; stroke: var(--branch); stroke-linecap: round; transition: stroke 1s ease; }
+#roots-group path { fill: none; stroke: var(--root-c); stroke-linecap: round; opacity: .8; transition: stroke 1s ease; }
 
-#leaves-group ellipse { fill: var(--leaf); transform-box: fill-box; transform-origin: center; }
+#leaves-group ellipse { fill: var(--leaf); transform-box: fill-box; transform-origin: center; transition: fill 1s ease; }
 #leaves-group ellipse.young { fill: var(--leaf-light); }
 
 #rings-group circle { fill: var(--paper); stroke: var(--terra); stroke-width: 3; }
@@ -120,10 +155,12 @@ body::after {
 .beats {
     position: absolute;
     inset: auto;
+    z-index: 20;
     left: 48% !important;
     width: 47% !important;
     top: 0;
     bottom: 0;
+    pointer-events: none;
 }
 
 .beat {
@@ -131,7 +168,7 @@ body::after {
     right: clamp(1rem, 2vw, 4rem);
     top: 50%;
     transform: translateY(-50%);
-    width: min(440px, 88vw);
+    width: min(440px, 92%);
     opacity: 0; visibility: hidden;
     pointer-events: auto;
 }
@@ -150,7 +187,7 @@ body::after {
 .beat-link:hover { text-decoration: underline; }
 
 /* — Hero beat: the botanical specimen label — */
-.beat-hero { top: auto; bottom: 9vh; transform: none; width: min(560px, 45vw); }
+.beat-hero { top: auto; bottom: 9vh; transform: none; width: min(560px, 95%); }
 .specimen {
     font-size: .72rem; letter-spacing: .34em; text-transform: uppercase;
     color: var(--moss); font-weight: 700; margin-bottom: 1.1rem;
@@ -182,7 +219,7 @@ body::after {
 /* — Growth-ring cards — */
 .ring-card {
     display: block; width: 100%; text-align: left;
-    background: rgba(246,241,229,.9); border: 1.5px solid rgba(28,43,29,.22);
+    background: var(--card-bg); border: 1.5px solid var(--card-border);
     border-radius: 14px; padding: 1rem 1.2rem; cursor: pointer;
     font-family: var(--font-body); backdrop-filter: blur(4px);
     transition: border-color .25s ease, box-shadow .25s ease, transform .25s ease;
@@ -251,9 +288,170 @@ body::after {
 @media (max-width: 780px) {
     .nav-links a:not(.nav-cv) { display: none; }
     /* tree recedes so text stays readable on narrow screens */
-    #tree-svg { opacity: .5; }
-    .beat { background: rgba(246,241,229,.92); border-radius: 16px; padding: 1.2rem 1.3rem; box-shadow: 0 14px 40px -18px rgba(74,56,35,.5); }
+    #tree-svg { opacity: .5; left: 0 !important; width: 100% !important; }
+    .beats { left: 4% !important; width: 92% !important; }
+    .beat { background: var(--card-bg); border-radius: 16px; padding: 1.2rem 1.3rem; box-shadow: 0 14px 40px -18px rgba(74,56,35,.5); }
     .beat-ring { padding: 0; background: none; box-shadow: none; }
     .beat-hero { background: none; box-shadow: none; padding: 0; }
     .skill-cols { grid-template-columns: 1fr; gap: .8rem; }
 }
+
+/* ————— Theme toggle ————— */
+.theme-toggle {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 38px; height: 38px; border-radius: 50%;
+    background: transparent; border: 1.5px solid var(--card-border);
+    color: var(--ink); cursor: pointer;
+    transition: border-color .25s ease, color .25s ease, transform .45s ease;
+}
+.theme-toggle:hover { border-color: var(--terra); color: var(--terra); transform: rotate(18deg); }
+.theme-toggle .icon-moon { display: none; }
+[data-theme="night"] .theme-toggle .icon-sun { display: none; }
+[data-theme="night"] .theme-toggle .icon-moon { display: block; }
+
+/* ————— Seed identity (footer) ————— */
+.footer-seed { margin-top: 1.1rem; font-size: .92rem; color: rgba(246,241,229,.75); }
+.footer-seed #seed-num { font-family: var(--font-display); color: var(--gold); font-weight: 600; letter-spacing: .05em; }
+.copy-link {
+    background: none; border: none; padding: 0; cursor: pointer;
+    font-family: var(--font-body); font-size: .92rem; font-weight: 700;
+    color: var(--leaf-light); text-decoration: underline; text-underline-offset: 3px;
+}
+.copy-link:hover { color: var(--gold); }
+
+/* ————— Background forest ————— */
+.forest-layer {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    pointer-events: none; will-change: transform;
+}
+.forest-layer svg { width: 100%; height: 100%; }
+.forest-far  { z-index: 3; }
+.forest-mid  { z-index: 4; }
+#tree-svg { z-index: 6; }
+.forest-far svg { fill: var(--moss); opacity: .10; transition: fill 1s ease; }
+.forest-mid svg { fill: var(--moss); opacity: .17; transition: fill 1s ease; }
+[data-theme="night"] .forest-far svg { fill: #24304a; opacity: .55; }
+[data-theme="night"] .forest-mid svg { fill: #1a2338; opacity: .7; }
+
+/* ————— Stars (night) ————— */
+.stars {
+    position: absolute; inset: 0; pointer-events: none; z-index: 2;
+    opacity: 0; transition: opacity 1.2s ease;
+    background-image:
+        radial-gradient(1.4px 1.4px at 12% 18%, #fff 50%, transparent 51%),
+        radial-gradient(1px 1px at 28% 8%, #fff 50%, transparent 51%),
+        radial-gradient(1.6px 1.6px at 45% 22%, #fff 50%, transparent 51%),
+        radial-gradient(1px 1px at 62% 10%, #fff 50%, transparent 51%),
+        radial-gradient(1.3px 1.3px at 78% 26%, #fff 50%, transparent 51%),
+        radial-gradient(1px 1px at 90% 12%, #fff 50%, transparent 51%),
+        radial-gradient(1.2px 1.2px at 8% 34%, #fff 50%, transparent 51%),
+        radial-gradient(1px 1px at 52% 36%, #fff 50%, transparent 51%),
+        radial-gradient(1.5px 1.5px at 70% 32%, #fff 50%, transparent 51%),
+        radial-gradient(1px 1px at 36% 30%, #fff 50%, transparent 51%);
+}
+[data-theme="night"] .stars { opacity: .8; }
+
+/* ————— Fruits & blossoms ————— */
+#fruit-group { z-index: 3; }
+.fruit { cursor: pointer; }
+.fruit .fruit-body { fill: var(--terra); stroke: rgba(0,0,0,.25); stroke-width: 1; transition: fill .2s ease; }
+.fruit .fruit-stem { stroke: var(--branch); stroke-width: 1.6; fill: none; }
+.fruit .fruit-shine { fill: rgba(255,255,255,.5); }
+.fruit:hover .fruit-body, .fruit:focus .fruit-body { fill: var(--gold); }
+.fruit:focus { outline: none; }
+.fruit:focus-visible .fruit-body { stroke: var(--ink); stroke-width: 2; }
+
+.blossom { cursor: pointer; }
+.blossom .petal { fill: #e7a8b8; transition: fill .2s ease; }
+.blossom .blossom-core { fill: var(--gold); }
+.blossom:hover .petal, .blossom:focus .petal { fill: #f2c4cf; }
+[data-theme="night"] .blossom .petal { fill: #9a7fa8; }
+[data-theme="night"] .blossom:hover .petal { fill: #b99fc6; }
+
+/* ————— Fruit tooltip ————— */
+.fruit-tip {
+    position: fixed; z-index: 300; pointer-events: none;
+    background: var(--ink); color: var(--paper);
+    font-size: .82rem; line-height: 1.45; font-weight: 500;
+    padding: .5rem .75rem; border-radius: 8px;
+    max-width: 220px;
+    box-shadow: 0 8px 24px -8px rgba(0,0,0,.4);
+    transform: translate(-50%, calc(-100% - 14px));
+    opacity: 0; transition: opacity .18s ease;
+}
+.fruit-tip.show { opacity: 1; }
+.fruit-tip strong { display: block; font-family: var(--font-display); font-size: .92rem; margin-bottom: .1rem; }
+
+/* ————— Bottom sheet ————— */
+.sheet-backdrop {
+    position: fixed; inset: 0; z-index: 400;
+    background: rgba(12, 18, 12, .45);
+    backdrop-filter: blur(3px);
+    opacity: 0; transition: opacity .35s ease;
+}
+.sheet-backdrop.show { opacity: 1; }
+.sheet {
+    position: fixed; left: 50%; bottom: 0; z-index: 410;
+    width: min(680px, 94vw);
+    transform: translate(-50%, 105%);
+    background: var(--card-bg);
+    backdrop-filter: blur(14px);
+    border: 1px solid var(--card-border);
+    border-bottom: none;
+    border-radius: 22px 22px 0 0;
+    padding: 1rem 1.6rem 2rem;
+    box-shadow: 0 -18px 60px -20px rgba(0,0,0,.45);
+    transition: transform .45s cubic-bezier(.22,.9,.3,1);
+    max-height: 46vh; overflow-y: auto;
+}
+.sheet.show { transform: translate(-50%, 0); }
+.sheet-handle { width: 44px; height: 4px; border-radius: 4px; background: var(--card-border); margin: .2rem auto 1rem; }
+.sheet-close {
+    position: absolute; top: .9rem; right: 1.1rem;
+    background: none; border: none; cursor: pointer;
+    font-size: 1.7rem; line-height: 1; color: var(--ink-soft);
+    transition: color .2s ease, transform .2s ease;
+}
+.sheet-close:hover { color: var(--terra); transform: rotate(90deg); }
+.sheet-kicker {
+    font-size: .72rem; letter-spacing: .3em; text-transform: uppercase;
+    color: var(--terra); font-weight: 700; margin-bottom: .5rem;
+}
+.sheet-title { font-family: var(--font-display); font-weight: 600; font-size: 1.5rem; color: var(--ink); margin-bottom: .6rem; }
+.sheet-body { color: var(--ink-soft); font-size: .98rem; margin-bottom: 1rem; }
+.sheet-tags { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.1rem; }
+.sheet-tags span {
+    font-size: .74rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--moss); border: 1px solid var(--card-border);
+    border-radius: 999px; padding: .22rem .7rem;
+}
+.sheet-links { display: flex; gap: 1.4rem; }
+.sheet-links a {
+    font-family: var(--font-display); font-weight: 600; font-size: 1rem;
+    color: var(--ink); text-decoration: none; border-bottom: 2px solid var(--terra);
+    padding-bottom: .1rem; transition: color .2s ease;
+}
+.sheet-links a:hover { color: var(--terra); }
+
+/* ————— Birds ————— */
+.bird-svg { opacity: 0; pointer-events: none; }
+.bird-svg .bird-body { fill: var(--ink); transition: fill 1s ease; }
+[data-theme="night"] .bird-svg .bird-body { fill: #cfd8d0; }
+.bird-svg .wing { transform-box: fill-box; transform-origin: 100% 100%; }
+.bird-svg.flapping .wing { animation: flap 0.2s ease-in-out infinite alternate; }
+@keyframes flap {
+    from { transform: rotate(-28deg); }
+    to   { transform: rotate(48deg); }
+}
+.bird-svg.landed .wing { transform: rotate(6deg); }
+
+/* ————— Theme fade overlay ————— */
+.theme-fade {
+    position: absolute; inset: 0; z-index: 50; pointer-events: none;
+    background: var(--ink); opacity: 0;
+}
+
+/* ————— Night tweaks ————— */
+[data-theme="night"] .site-nav.scrolled { box-shadow: 0 1px 0 rgba(223,232,228,.08); }
+[data-theme="night"] body { background: var(--paper); }
+[data-theme="night"] .hero-cue i { background: var(--ink-soft); }

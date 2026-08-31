@@ -1,7 +1,8 @@
 /* ————————————————————————————————————————
-   The Growing Tree — v2
+   The Growing Tree — core
    Procedural growth + atmosphere + scroll choreography.
-   A new tree is grown from a random seed on every visit.
+   Exposes window.TreeApp for the feature modules
+   (wind, fruit, forest, theme, birds).
 ———————————————————————————————————————— */
 
 (function () {
@@ -26,6 +27,31 @@
             t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
             return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
         };
+    }
+
+    /* ————— Tiny event bus for feature modules ————— */
+    var listeners = {};
+    function on(evt, cb) { (listeners[evt] = listeners[evt] || []).push(cb); }
+    function emit(evt, data) {
+        (listeners[evt] || []).forEach(function (cb) { cb(data); });
+    }
+
+    /* ————— Seed <-> URL ————— */
+    function seedFromURL() {
+        try {
+            var s = new URLSearchParams(window.location.search).get('seed');
+            if (s === null) return null;
+            var n = parseInt(s, 10);
+            if (isNaN(n) || n < 0) return null;
+            return n >>> 0;
+        } catch (e) { return null; }
+    }
+    function writeSeedToURL(s) {
+        try {
+            var url = new URL(window.location.href);
+            url.searchParams.set('seed', String(s));
+            window.history.replaceState(null, '', url.toString());
+        } catch (e) { /* file:// or privacy mode — degrade silently */ }
     }
 
     /* ————— Tree generation ————— */
@@ -146,6 +172,7 @@
     var renderItems = [];
     var renderLeaves = [];
     var renderRings = [];
+    var currentData = null;
     var beatEls = BEATS.map(function (b) {
         return { el: document.getElementById(b.id), win: b };
     });
@@ -154,9 +181,10 @@
     groundLine.style.strokeDasharray = groundLen;
 
     /* ————— Build / rebuild ————— */
-    function build(seed) {
-        var rand = mulberry32(seed);
+    function build(s) {
+        var rand = mulberry32(s);
         var data = generate(rand);
+        currentData = data;
         treeGroup.innerHTML = '';
         rootsGroup.innerHTML = '';
         leavesGroup.innerHTML = '';
@@ -202,12 +230,15 @@
                 renderRings.push({ el: g, t0: RING_JOBS[i].t0 });
             });
         }
+        emit('rebuild', data);
     }
 
     /* ————— Per-frame render ————— */
     function clamp01(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
+    var lastProgress = 0;
 
     function render(p) {
+        lastProgress = p;
         var i, f;
         groundLine.style.strokeDashoffset = groundLen * (1 - clamp01(p / 0.03));
 
@@ -235,18 +266,19 @@
                 else v = 1 - (p - w.c) / (w.d - w.c);
             }
             var isHero = b.el.id === 'beat-hero';
-            // the hero never fully disappears while idle — the seedling + name stay on screen
             if (isHero && idleOn) v = Math.max(v, 1);
             b.el.style.opacity = v.toFixed(3);
             b.el.style.visibility = v > 0.01 ? 'visible' : 'hidden';
             if (!isHero) b.el.style.transform = 'translateY(calc(-50% + ' + ((1 - v) * 24).toFixed(1) + 'px))';
         }
+        emit('progress', p);
     }
 
-    /* ————— Atmosphere: floating motes / pollen ————— */
+    /* ————— Atmosphere: floating motes / pollen / fireflies ————— */
     var motes = [];
     var moteCanvas = document.getElementById('motes');
     var moteCtx = moteCanvas.getContext('2d');
+    var motesMode = 'pollen';
 
     function sizeMotes() {
         moteCanvas.width = stage.clientWidth;
@@ -254,43 +286,72 @@
     }
     function initMotes() {
         motes = [];
-        var n = Math.max(14, Math.floor(stage.clientWidth / 90));
-        for (var i = 0; i < n; i++) {
-            motes.push({
-                x: Math.random() * moteCanvas.width,
-                y: Math.random() * moteCanvas.height,
-                r: 0.6 + Math.random() * 1.8,
-                vx: 0.1 + Math.random() * 0.35,
-                vy: -(0.05 + Math.random() * 0.2),
-                ph: Math.random() * Math.PI * 2,
-                a: 0.15 + Math.random() * 0.35
-            });
+        var w = moteCanvas.width, h = moteCanvas.height;
+        if (motesMode === 'firefly') {
+            var n = Math.max(10, Math.floor(w / 140));
+            for (var i = 0; i < n; i++) {
+                motes.push({
+                    x: w * 0.1 + Math.random() * w * 0.45,
+                    y: h * 0.08 + Math.random() * h * 0.5,
+                    r: 1.2 + Math.random() * 1.6,
+                    vx: (Math.random() - 0.5) * 0.3,
+                    vy: (Math.random() - 0.5) * 0.2,
+                    ph: Math.random() * Math.PI * 2,
+                    blink: 0.004 + Math.random() * 0.006,
+                    on: Math.random() * Math.PI * 2,
+                    a: 0.5 + Math.random() * 0.5
+                });
+            }
+        } else {
+            var m = Math.max(14, Math.floor(w / 90));
+            for (var j = 0; j < m; j++) {
+                motes.push({
+                    x: Math.random() * w,
+                    y: Math.random() * h,
+                    r: 0.6 + Math.random() * 1.8,
+                    vx: 0.1 + Math.random() * 0.35,
+                    vy: -(0.05 + Math.random() * 0.2),
+                    ph: Math.random() * Math.PI * 2,
+                    a: 0.15 + Math.random() * 0.35
+                });
+            }
         }
     }
     function tickMotes(t) {
         moteCtx.clearRect(0, 0, moteCanvas.width, moteCanvas.height);
-        for (var i = 0; i < motes.length; i++) {
-            var m = motes[i];
-            m.x += m.vx; m.y += m.vy;
-            if (m.x > moteCanvas.width + 10) m.x = -10;
-            if (m.y < -10) m.y = moteCanvas.height + 10;
-            var tw = 0.5 + 0.5 * Math.sin(t * 0.001 + m.ph);
-            moteCtx.beginPath();
-            moteCtx.arc(m.x, m.y, m.r, 0, Math.PI * 2);
-            moteCtx.fillStyle = 'rgba(240,194,101,' + (m.a * tw).toFixed(3) + ')';
-            moteCtx.fill();
+        var i, m;
+        if (motesMode === 'firefly') {
+            for (i = 0; i < motes.length; i++) {
+                m = motes[i];
+                m.x += m.vx; m.y += m.vy;
+                if (m.x < moteCanvas.width * 0.05 || m.x > moteCanvas.width * 0.6) m.vx *= -1;
+                if (m.y < moteCanvas.height * 0.04 || m.y > moteCanvas.height * 0.62) m.vy *= -1;
+                m.on += m.blink;
+                var glow = Math.max(0, Math.sin(m.on));
+                glow = glow * glow * glow; // sharp blink
+                if (glow < 0.02) continue;
+                moteCtx.beginPath();
+                moteCtx.arc(m.x, m.y, m.r * (1 + glow), 0, Math.PI * 2);
+                moteCtx.fillStyle = 'rgba(190,230,120,' + (m.a * glow).toFixed(3) + ')';
+                moteCtx.fill();
+            }
+        } else {
+            for (i = 0; i < motes.length; i++) {
+                m = motes[i];
+                m.x += m.vx; m.y += m.vy;
+                if (m.x > moteCanvas.width + 10) m.x = -10;
+                if (m.y < -10) m.y = moteCanvas.height + 10;
+                var tw = 0.5 + 0.5 * Math.sin(t * 0.001 + m.ph);
+                moteCtx.beginPath();
+                moteCtx.arc(m.x, m.y, m.r, 0, Math.PI * 2);
+                moteCtx.fillStyle = 'rgba(240,194,101,' + (m.a * tw).toFixed(3) + ')';
+                moteCtx.fill();
+            }
         }
     }
-
-    /* ————— Atmosphere: gentle wind sway on the canopy ————— */
-    var swayTl = null;
-    function startSway() {
-        if (REDUCED) return;
-        if (swayTl) swayTl.kill();
-        swayTl = gsap.to(leavesGroup, {
-            rotation: 1.6, transformOrigin: '50% 82%',
-            duration: 3.2, yoyo: true, repeat: -1, ease: 'sine.inOut'
-        });
+    function setMotesMode(mode) {
+        motesMode = mode;
+        initMotes();
     }
 
     /* ————— Master ticker ————— */
@@ -319,7 +380,6 @@
             pin: '#stage',
             scrub: 0.6,
             onUpdate: function (self) {
-                // while idling at the top, ignore tiny scroll jitter — the idle loop owns the render
                 if (idleOn) {
                     if (self.progress > idleBase + 0.004) stopIdle();
                     else return;
@@ -331,12 +391,12 @@
     }
 
     /* ————— Idle: a living seedling that gently "breathes" before the first scroll ————— */
-    var IDLE_LEVEL = 0.05; // a small, always-visible seedling
+    var IDLE_LEVEL = 0.05;
     function startIdle() {
         if (REDUCED || !st) return;
         idleOn = true;
         idleBase = Math.max(currentProgress(), IDLE_LEVEL);
-        render(idleBase); // guarantee a visible seedling + hero immediately
+        render(idleBase);
         idleTween = gsap.to({ b: 0 }, {
             b: 1, duration: 2.6, yoyo: true, repeat: -1, ease: 'sine.inOut',
             onUpdate: function () {
@@ -378,25 +438,90 @@
         });
     });
 
+    /* ————— Seed identity (footer) ————— */
+    var seedEl = document.getElementById('seed-num');
+    var copyBtn = document.getElementById('copy-link');
+
+    function showSeed(s) {
+        if (seedEl) seedEl.textContent = '#' + ('00000' + s).slice(-5);
+    }
+    function copyLink() {
+        var url = window.location.href;
+        function done() {
+            if (!copyBtn) return;
+            var old = copyBtn.textContent;
+            copyBtn.textContent = 'Copied!';
+            setTimeout(function () { copyBtn.textContent = old; }, 1600);
+        }
+        function fallback() {
+            var ta = document.createElement('textarea');
+            ta.value = url;
+            ta.style.position = 'fixed'; ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            try { document.execCommand('copy'); } catch (e) {}
+            document.body.removeChild(ta);
+            done();
+        }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(url).then(done, fallback);
+        } else fallback();
+    }
+    if (copyBtn) copyBtn.addEventListener('click', copyLink);
+
     /* ————— Regrow ————— */
-    var seed = (Math.random() * 4294967296) >>> 0;
-    document.getElementById('regrow').addEventListener('click', function () {
-        seed = (Math.random() * 4294967296) >>> 0;
+    function setSeed(s) {
+        seed = s;
         build(seed);
+        writeSeedToURL(seed);
+        showSeed(seed);
         wireScroll();
         ScrollTrigger.refresh();
+    }
+    var seed = seedFromURL();
+    if (seed === null) seed = (Math.random() * 4294967296) >>> 0;
+
+    var regrowBtn = document.getElementById('regrow');
+    if (regrowBtn) regrowBtn.addEventListener('click', function () {
+        setSeed((Math.random() * 4294967296) >>> 0);
     });
+
+    /* ————— Public API for feature modules ————— */
+    window.TreeApp = {
+        NS: NS,
+        REDUCED: REDUCED,
+        MOBILE: MOBILE,
+        stage: stage,
+        treeGroup: treeGroup,
+        rootsGroup: rootsGroup,
+        leavesGroup: leavesGroup,
+        ringsGroup: ringsGroup,
+        get seed() { return seed; },
+        get data() { return currentData; },
+        BASE_X: BASE_X,
+        BASE_Y: BASE_Y,
+        progress: function () { return lastProgress; },
+        scrollToFraction: function (f) {
+            if (!st) return;
+            window.scrollTo({ top: st.start + f * (st.end - st.start), behavior: 'smooth' });
+        },
+        stopIdle: stopIdle,
+        on: on,
+        emit: emit,
+        setMotesMode: setMotesMode,
+        setSeed: setSeed
+    };
 
     /* ————— Boot ————— */
     build(seed);
+    writeSeedToURL(seed);
+    showSeed(seed);
     sizeMotes();
     initMotes();
     wireScroll();
-    startSway();
 
-    // grow a seedling on load so the screen is alive before the first scroll
     if (!REDUCED) {
-        idleOn = true; // hero + seedling stay visible from the very first frame
+        idleOn = true;
         var intro = { p: 0 };
         render(0);
         gsap.to(intro, {
