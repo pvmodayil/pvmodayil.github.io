@@ -121,9 +121,11 @@ body::after {
 
 #tree-svg {
     position: absolute;
-    inset: 0;
-    width: 41% !important;
     left: 7% !important;
+    bottom: 0;
+    width: 41% !important;
+    height: 41vw !important;
+    z-index: 6;
 }
 
 /* soft volumetric light from the sun */
@@ -139,8 +141,17 @@ body::after {
 
 #motes { position: absolute; inset: 0; z-index: 5; width: 100%; height: 100%; pointer-events: none; }
 
-#ground-line { stroke: var(--soil-c); stroke-width: 3; transition: stroke 1s ease; }
-#soil { fill: var(--soil-c); opacity: var(--soil-c-op); transition: fill 1s ease, opacity 1s ease; }
+.ground {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    height: 12.5%;
+    background: var(--soil-c);
+    opacity: var(--soil-c-op);
+    border-top: 3px solid var(--soil-c);
+    transform-origin: 0 50%;
+    transform: scaleX(0);
+    z-index: 5;
+    transition: background 1s ease, border-color 1s ease, opacity 1s ease;
+}
 
 #tree-group path { fill: none; stroke: var(--branch); stroke-linecap: round; transition: stroke 1s ease; }
 #roots-group path { fill: none; stroke: var(--root-c); stroke-linecap: round; opacity: .8; transition: stroke 1s ease; }
@@ -276,7 +287,7 @@ body::after {
     .hero-cue i, .light-beam, body::after { animation: none; }
     #grow-scene { height: auto; }
     .stage { height: auto; min-height: 100vh; padding: 6rem 0 4rem; }
-    #tree-svg { position: relative; height: 60vh; }
+    #tree-svg { position: relative; height: 60vh !important; width: 82% !important; left: auto !important; right: auto; margin: 0 auto; aspect-ratio: auto; }
     .beats { position: relative; inset: auto; }
     .beat { position: relative; left: auto; top: auto; bottom: auto; transform: none; opacity: 1; visibility: visible; margin: 2.5rem auto; width: min(560px, 90vw); }
     .ring-narrative { max-height: none; opacity: 1; margin-top: .6rem; }
@@ -288,7 +299,7 @@ body::after {
 @media (max-width: 780px) {
     .nav-links a:not(.nav-cv) { display: none; }
     /* tree recedes so text stays readable on narrow screens */
-    #tree-svg { opacity: .5; left: 0 !important; width: 100% !important; }
+    #tree-svg { opacity: .5; left: 0 !important; width: 100% !important; height: 100vw !important; }
     .beats { left: 4% !important; width: 92% !important; }
     .beat { background: var(--card-bg); border-radius: 16px; padding: 1.2rem 1.3rem; box-shadow: 0 14px 40px -18px rgba(74,56,35,.5); }
     .beat-ring { padding: 0; background: none; box-shadow: none; }
@@ -354,6 +365,7 @@ body::after {
 /* ————— Birds ————— */
 .bird-svg { opacity: 0; pointer-events: none; }
 .bird-svg .bird-body { fill: var(--ink); transition: fill 1s ease; }
+.bird-svg .bird-eye { fill: var(--paper); }
 [data-theme="night"] .bird-svg .bird-body { fill: #cfd8d0; }
 .bird-svg .wing { transform-box: fill-box; transform-origin: 100% 100%; }
 .bird-svg.flapping .wing { animation: flap 0.2s ease-in-out infinite alternate; }

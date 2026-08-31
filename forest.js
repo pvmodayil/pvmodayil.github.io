@@ -46,20 +46,20 @@
         var layer = document.createElement('div');
         layer.className = 'forest-layer ' + cls;
         var svg = document.createElementNS(NS, 'svg');
-        svg.setAttribute('viewBox', '0 0 1000 1000');
-        svg.setAttribute('preserveAspectRatio', 'xMidYMax meet');
+        svg.setAttribute('viewBox', '0 0 1600 900');
+        svg.setAttribute('preserveAspectRatio', 'xMidYMax slice');
         var rand = prng(seedVal);
         for (var i = 0; i < count; i++) {
-            var x = (i + 0.5) * (1000 / count) + (rand() - 0.5) * (1000 / count) * 0.7;
+            var x = (i + 0.5) * (1600 / count) + (rand() - 0.5) * (1600 / count) * 0.7;
             var h = hMin + rand() * (hMax - hMin);
-            svg.appendChild(treeSilhouette(rand, x, 838, h));
+            svg.appendChild(treeSilhouette(rand, x, 880, h));
         }
         layer.appendChild(svg);
         return layer;
     }
 
-    var far = buildLayer('forest-far', 14, 90, 170, 987654);
-    var mid = buildLayer('forest-mid', 8, 150, 260, 246813);
+    var far = buildLayer('forest-far', 22, 70, 130, 987654);
+    var mid = buildLayer('forest-mid', 12, 110, 190, 246813);
 
     var stage = A.stage;
     stage.insertBefore(far, stage.firstChild);

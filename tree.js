@@ -148,7 +148,7 @@
     var rootsGroup = document.getElementById('roots-group');
     var leavesGroup = document.getElementById('leaves-group');
     var ringsGroup = document.getElementById('rings-group');
-    var groundLine = document.getElementById('ground-line');
+    var groundEl = document.getElementById('ground');
     var stage = document.getElementById('stage');
 
     var RING_JOBS = [
@@ -176,9 +176,6 @@
     var beatEls = BEATS.map(function (b) {
         return { el: document.getElementById(b.id), win: b };
     });
-
-    var groundLen = groundLine.getTotalLength();
-    groundLine.style.strokeDasharray = groundLen;
 
     /* ————— Build / rebuild ————— */
     function build(s) {
@@ -240,7 +237,7 @@
     function render(p) {
         lastProgress = p;
         var i, f;
-        groundLine.style.strokeDashoffset = groundLen * (1 - clamp01(p / 0.03));
+        groundEl.style.transform = 'scaleX(' + clamp01(p / 0.03).toFixed(3) + ')';
 
         for (i = 0; i < renderItems.length; i++) {
             var it = renderItems[i];
@@ -501,6 +498,7 @@
         BASE_X: BASE_X,
         BASE_Y: BASE_Y,
         progress: function () { return lastProgress; },
+        render: render,
         scrollToFraction: function (f) {
             if (!st) return;
             window.scrollTo({ top: st.start + f * (st.end - st.start), behavior: 'smooth' });
