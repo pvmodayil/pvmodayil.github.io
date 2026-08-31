@@ -2,7 +2,7 @@
    The Growing Tree — core
    Procedural growth + atmosphere + scroll choreography.
    Exposes window.TreeApp for the feature modules
-   (wind, fruit, forest, theme, birds).
+   (wind, forest, theme, birds).
 ———————————————————————————————————————— */
 
 (function () {
