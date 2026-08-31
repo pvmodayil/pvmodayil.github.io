@@ -190,14 +190,15 @@ body::after {
 .ring-card:hover { border-color: var(--terra); box-shadow: 0 12px 32px -14px rgba(74,56,35,.5); transform: translateY(-2px); }
 .ring-date { display: block; font-size: .72rem; letter-spacing: .18em; text-transform: uppercase; color: var(--moss); font-weight: 700; }
 .ring-role { display: block; font-family: var(--font-display); font-weight: 600; font-size: 1.08rem; color: var(--ink); margin-top: .3rem; }
+.ring-summary { display: block; color: var(--ink-soft); font-size: .92rem; margin-top: .4rem; }
 .ring-narrative {
     display: block; color: var(--ink-soft); font-size: .93rem; line-height: 1.6;
     max-height: 0; opacity: 0; overflow: hidden;
     transition: max-height .45s ease, opacity .35s ease, margin .45s ease;
 }
 .ring-card[aria-expanded="true"] .ring-narrative { max-height: 320px; opacity: 1; margin-top: .6rem; }
-.ring-card::after { content: "Read more"; display: inline-block; margin-top: .45rem; font-size: .76rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--terra); }
-.ring-card[aria-expanded="true"]::after { content: "– close"; }
+.ring-card::after { content: "Read more"; display: inline-block; margin-top: .5rem; font-size: .76rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--terra); }
+.ring-card[aria-expanded="true"]::after { content: "Show less"; }
 
 /* — Projects (fruit) — */
 .fruit-list { list-style: none; margin-top: .4rem; }
@@ -243,6 +244,7 @@ body::after {
     .beat { position: relative; left: auto; top: auto; bottom: auto; transform: none; opacity: 1; visibility: visible; margin: 2.5rem auto; width: min(560px, 90vw); }
     .ring-narrative { max-height: none; opacity: 1; margin-top: .6rem; }
     .ring-card::after { content: none; }
+    .ring-summary { display: none; }
 }
 
 /* ————— Small screens ————— */
